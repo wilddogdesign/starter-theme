@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="no-js lt-ie10 is-ie9" lang="en">
+<![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" {{site.language_attributes}}>
+  <!--<![endif]-->
+  {% include 'includes/_head.twig' %}
+
+  <body class="{{body_class}} {% block template_class %}{% endblock %}" data-template="base.twig">
+    {% if 'offline' not in body_class %}
+      {% include "includes/_header.twig" %}
+    {% endif %}
+
+    <div class="o-main" id="main" role="main">
+      {% block content %}{% endblock %}
+    </div>
+
+    {% if 'offline' not in body_class %}
+      {% include "includes/_footer.twig" %}
+      {% block on_page_styles %}{% endblock %}
+    {% endif %}
+
+    {{function('wp_footer')}}
+  </body>
+</html>
