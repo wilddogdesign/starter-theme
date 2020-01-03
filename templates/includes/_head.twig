@@ -36,4 +36,13 @@
   {% include 'includes/_favicons.twig' %}
 
   {{function('wp_head')}}
+  
+  {# Set up reCAPTCHAS, if there are any #}
+  {% if globals.recaptcha_key and globals.recaptcha_secret %}
+  <script src="https://www.google.com/recaptcha/api.js?onload=recaptchaReadyCallback" async defer></script>
+  <script>
+    window.captchas = [];
+    window.recaptchaKey = '{{globals.recaptcha_key}}';
+  </script>
+  {% endif %}
 </head>

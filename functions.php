@@ -22,7 +22,16 @@ function require_library_dir($path)
 
 // Load libraries and scripts
 require_once('library/scripts.php');
+require_library_dir('fields');
 require_library_dir('helpers');
+
+// custom forms
+require_once('library/forms/init-headless.php');
+//require_once('library/forms/fields/form.php');
+require_once('library/forms/register.php');
+require_once('library/forms/recaptcha.php');
+require_once('library/forms/admin-enhancements.php');
+do_action('af/register_forms');
 
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
@@ -210,6 +219,12 @@ class StarterSite extends Timber\Site
     {
         $twig->addExtension(new Twig\Extension\StringLoaderExtension());
         $twig->addFilter(new Twig\TwigFilter('myfoo', array($this, 'myfoo')));
+      
+        //add a class to paragraphs |pclass('class')
+        $twig->addFilter('pclass', new Twig_SimpleFilter('pclass', function($string, $class) {
+            return str_replace('<p>', '<p class="'.$class.'">', $string);
+        }));
+        
         return $twig;
     }
 }
@@ -243,5 +258,30 @@ function add_menu_link()
 }
 
 add_action('admin_menu', 'add_menu_link');
+
+// Uncomment this if you're using Advanced Forms
+/**function add_entries_link()
+{
+  add_menu_page(
+    __('Menus', 'textdomain'),
+    'Form entries',
+    'manage_options',
+    'edit.php?post_type=af_entry',
+    '',
+    'dashicons-email-alt',
+    80
+  );
+}
+
+add_action('admin_menu', 'add_entries_link');**/
+
+// Uncomment this if you're using google maps and need them to work in the back-end using the key set in globals
+/**function my_acf_google_map_api($api)
+{
+  $api['key'] = get_field('field_map_key', 'option');
+  return $api;
+}
+
+add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');**/
 
 new StarterSite();
