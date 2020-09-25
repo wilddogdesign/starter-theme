@@ -39,7 +39,7 @@ $example_tax_args = array(
 register_taxonomy(
     'example-taxonomies',
     array(
-        'example-post',
+        'example',
     ),
     $example_tax_args
 );

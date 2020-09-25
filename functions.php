@@ -1,15 +1,6 @@
 <?php
 
 /**
- * Timber starter-theme
- * https://github.com/timber/starter-theme
- *
- * @package  WordPress
- * @subpackage  Timber
- * @since   Timber 0.1
- */
-
-/**
  * Load all php files in a given directory
  * @param  string $path
  */
@@ -18,21 +9,6 @@ function require_library_dir($path)
     array_map(function ($file) {
         require_once($file);
     }, glob(__DIR__ . "/library/{$path}/*.php"));
-}
-
-// Load libraries and scripts
-require_once('library/scripts.php');
-require_library_dir('helpers');
-
-/**
- * If you are installing Timber as a Composer dependency in your theme, you'll need this block
- * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
- * plug-in, you can safely delete this block.
- */
-$composer_autoload = __DIR__ . '/vendor/autoload.php';
-if (file_exists($composer_autoload)) {
-    require_once $composer_autoload;
-    $timber = new Timber\Timber();
 }
 
 /**
@@ -68,7 +44,16 @@ Timber::$dirname = array('templates', 'views');
  */
 Timber::$autoescape = false;
 
-
+/**
+ * If you are installing Timber as a Composer dependency in your theme, you'll need this block
+ * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
+ * plug-in, you can safely delete this block.
+ */
+$composer_autoload = __DIR__ . '/vendor/autoload.php';
+if (file_exists($composer_autoload)) {
+    require_once $composer_autoload;
+    $timber = new Timber\Timber();
+}
 /**
  * We're going to configure our theme inside of a subclass of Timber\Site
  * You can move this to its own file and include here via php's include("MySite.php")
@@ -78,170 +63,142 @@ class StarterSite extends Timber\Site
     /** Add timber support. */
     public function __construct()
     {
-        add_action('after_setup_theme', array($this, 'theme_supports'));
-        add_filter('timber/context', array($this, 'add_to_context'));
-        add_filter('timber/twig', array($this, 'add_to_twig'));
-        add_action('init', array($this, 'register_post_types'));
-        add_action('init', array($this, 'register_taxonomies'));
+        $this->criticalHelpers();
+        $this->criticalActions();
+
+        if (is_admin()) {
+            $this->adminHelpers();
+            $this->adminActions();
+        } elseif (is_user_logged_in()) {
+            require_once('library/admin/StarterSiteAdminBar.php');
+        }
+
+        if (WP_ENV === 'development') {
+            $this->devHelpers();
+        }
+
         parent::__construct();
     }
-    /** This is where you can register custom post types. */
-    public function register_post_types()
+
+    // Needed on both the front and backend
+    public function criticalHelpers()
     {
-        require_library_dir('post-types');
+        // Include Critical Helpers
+        require_once('library/helpers/critical/ThemeSupport.php');
+        require_once('library/helpers/critical/RegisterMenus.php');
+
+        // Not Admin Page
+        if (!is_admin()) {
+            // Include Critical Helpers
+            require_once('library/helpers/critical/TwigAddToContext.php');
+            require_once('library/helpers/critical/TwigExtensions.php');
+        }
     }
 
-    /** This is where you can register custom taxonomies. */
-    public function register_taxonomies()
+    // Needed on both the front and backend
+    public function criticalActions()
     {
+        add_action('after_setup_theme', array($this, 'criticalThemeSupport'));
+        add_action('after_setup_theme', array($this, 'criticalRegisterMenus'));
+        add_action('init', array($this, 'criticalLibraries'));
+        add_action('init', array($this, 'registerRoutes'));
+
+        // Not Admin Page
+        if (!is_admin()) {
+            add_action('init', array($this, 'criticalScripts'));
+            add_filter('timber/context', array($this, 'addToContext'));
+            add_filter('timber/twig', array($this, 'addToTwig'));
+        }
+    }
+
+    // Needed on both the front and backend
+    public function criticalThemeSupport()
+    {
+        new ThemeSupport();
+    }
+
+    // Needed on both the front and backend
+    public function criticalRegisterMenus()
+    {
+        new RegisterMenus();
+    }
+
+    // Needed on both the front and backend
+    public function criticalLibraries()
+    {
+        require_library_dir('post-types');
         require_library_dir('taxonomies');
     }
 
-    /** This is where you add some context
-     *
-     * @param string $context context['this'] Being the Twig's {{ this }}.
-     */
-    public function add_to_context($context)
+    // Needed on both the front and backend
+    public function registerRoutes()
     {
-        $context['foo']   = 'bar';
-        $context['stuff'] = 'I am a value set in your functions.php file';
-        $context['notes'] = 'These values are available everytime you call Timber::context();';
-        // You can do $context['menu'] = new Timber\Menu('hyphenated-menu-name-from-admin');
-        $context['menu']  = new Timber\Menu();
-        $context['site']  = $this;
+        require_once('library/routes.php');
+    }
 
-        /**
-         * CSS
-         * */
-        $fileLocation = glob('app/themes/bedrock-theme/static/css/main-*.css')[0];
-        $cssFile = substr($fileLocation, strrpos($fileLocation, '/') + 1);
+    // Needed on both the front and backend
+    public function criticalScripts()
+    {
+        require_once('library/scripts.php');
+    }
 
-        // Get css
-        $cssFiles = glob('app/themes/bedrock-theme/static/css/main-*.css');
+    public function addToContext($context)
+    {
+        // Site Information
+        $context['site'] = $this;
+        $context['site_url'] = get_home_url();
+        $context = TwigAddToContext::addToContext($context);
 
-        // remove critical as it also has main- in it's name now
-        foreach ($cssFiles as $key => $filename) {
-            if (strpos($filename, "critical")) {
-                $critical_file_path = $cssFiles[$key];
-                unset($cssFiles[$key]);
-            }
+        if (isset($_GET["form-status"]) && $_GET["form-status"] == 'error' && !empty($_COOKIE['form_errors'])) {
+            $context['form_errors'] = json_decode(stripslashes($_COOKIE['form_errors']));
+            $context['old_inputs'] = json_decode(stripslashes($_COOKIE['old_inputs']));
         }
 
-        // now get the location, it's the only one left
-        $fileLocation = array_values($cssFiles)[0];
-        $cssFile = substr($fileLocation, strrpos($fileLocation, '/') + 1);
-        $context['static'] = get_stylesheet_directory_uri() . '/static/';
-        $context['css'] = $context['static'] . 'css/' . $cssFile;
-        $context['criticalCss'] = str_replace('../', get_stylesheet_directory_uri() . '/static/', file_get_contents($critical_file_path));
+        // TODO
+        $liveUrls = [
+            'tbc.com',
+            'tbc.wilddogdevelopment.com',
+        ];
+
+        $context['is_live'] = in_array($_SERVER['HTTP_HOST'], $liveUrls);
 
         return $context;
     }
 
-    public function theme_supports()
+    public function addToTwig($twig)
     {
-        // Add default posts and comments RSS feed links to head.
-        add_theme_support('automatic-feed-links');
+        $twig = TwigExtensions::addToTwig($twig);
 
-        /*
-		 * Let WordPress manage the document title.
-		 * By adding theme support, we declare that this theme does not use a
-		 * hard-coded <title> tag in the document head, and expect WordPress to
-		 * provide it for us.
-		 */
-        add_theme_support('title-tag');
-
-        /*
-		 * Enable support for Post Thumbnails on posts and pages.
-		 *
-		 * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-		 */
-        add_theme_support('post-thumbnails');
-
-        /*
-		 * Switch default core markup for search form, comment form, and comments
-		 * to output valid HTML5.
-		 */
-        add_theme_support(
-            'html5',
-            array(
-                'comment-form',
-                'comment-list',
-                'gallery',
-                'caption',
-            )
-        );
-
-        /*
-		 * Enable support for Post Formats.
-		 *
-		 * See: https://codex.wordpress.org/Post_Formats
-		 */
-        add_theme_support(
-            'post-formats',
-            array(
-                'aside',
-                'image',
-                'video',
-                'quote',
-                'link',
-                'gallery',
-                'audio',
-            )
-        );
-
-        add_theme_support('menus');
-    }
-
-    /** This Would return 'foo bar!'.
-     *
-     * @param string $text being 'foo', then returned 'foo bar!'.
-     */
-    public function myfoo($text)
-    {
-        $text .= ' bar!';
-        return $text;
-    }
-
-    /** This is where you can add your own functions to twig.
-     *
-     * @param string $twig get extension.
-     */
-    public function add_to_twig($twig)
-    {
-        $twig->addExtension(new Twig\Extension\StringLoaderExtension());
-        $twig->addFilter(new Twig\TwigFilter('myfoo', array($this, 'myfoo')));
         return $twig;
     }
+
+    // Link to Admin JS file
+    public function includeJS()
+    {
+        wp_enqueue_script('js-file', get_template_directory_uri() . '/library/js/admin.js', array(), false, true);
+    }
+
+    // Only needed on the backend
+    public function adminHelpers()
+    {
+        // Additional Helpers
+
+        require_library_dir('admin'); // Admin Menu, Admin Bar, Image Control
+        require_library_dir('admin/acf-fields'); // Dynamic ACF Fields
+        require_library_dir('admin/helpers'); // Admin Helpers
+        require_library_dir('admin/pages'); // Admin Pages
+    }
+
+    // Only needed on the backend
+    public function adminActions()
+    {
+        add_action('admin_enqueue_scripts', array($this, 'includeJS')); // ACF JSON Script
+    }
+
+    public function devHelpers()
+    {
+        require_once('library/helpers/dd.php');
+    }
 }
-
-// Remove menu items we don't want the client seeing
-function remove_menus()
-{
-    remove_menu_page('edit.php'); // Posts
-    remove_menu_page('edit-comments.php'); // Comments
-    remove_menu_page('themes.php'); // Appearance
-    remove_menu_page('tools.php'); // Tools
-    // You might want the following at first
-    // remove_menu_page('edit.php?post_type=af_form'); // Forms
-    // remove_menu_page('edit.php?post_type=acf-field-group'); //Custom fields
-}
-
-add_action('admin_menu', 'remove_menus');
-
-// Add menus back in
-function add_menu_link()
-{
-    add_menu_page(
-        __('Menus', 'textdomain'),
-        'Menus',
-        'manage_options',
-        'nav-menus.php',
-        '',
-        'dashicons-networking',
-        41
-    );
-}
-
-add_action('admin_menu', 'add_menu_link');
 
 new StarterSite();

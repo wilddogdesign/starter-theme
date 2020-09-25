@@ -1,0 +1,17 @@
+<form
+  id="contact-form"
+  action="/form-handler"
+  method="post"
+  class="js-recaptcha"
+>
+  <input name="form" type="hidden" value="contact" />
+  <input name="id" type="hidden" value="contact-form" />
+  <input name="wdd_contact_form_submission" type="hidden" />
+  {% do function('wp_nonce_field', 'wdd_contact_form_wpnonce_action', 'wdd_contact_form_wpnonce_name') %}
+
+  {# Form Fields  #}
+
+  <button id="form-submit" type="submit" class="">
+    Submit
+  </button>
+</form>

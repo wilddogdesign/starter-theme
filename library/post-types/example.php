@@ -50,4 +50,4 @@ $example_args = array(
 );
 
 // Then we register the post type with the system
-register_post_type('example-post', $example_args);
+register_post_type('example', $example_args);

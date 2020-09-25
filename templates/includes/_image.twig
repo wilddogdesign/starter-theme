@@ -1,0 +1,46 @@
+{# {% include 'includes/_image.twig' with {
+  'image': Image(),
+  'imageClasses': '',
+  'objectFit': '',
+  'lazyload': true,
+  'sizes': ['480','768','1024','1200','1600']
+  'gallery': 'main-gallery'
+}%} #}
+
+{% if objectFit and objectFit != 'center'%}
+  {% set object_position = 'u-object-fit u-object-position--'~objectFit %}
+{% elseif objectFit %}
+  {% set object_position = 'u-object-fit u-object-position' %}
+{% endif %}
+
+{% if sizes or lazyload %}
+  {% set lazyload = 'lazyload' %}
+{% endif %}
+
+<img
+  {% if id %}
+    id="{{id}}"
+  {% endif %}
+
+  {% if sizes %}
+    src="{{ image.src|resize(baseWidth ?: 32, baseHeight ?: 32, (objectFit)) }}"
+    data-srcset="
+      {% for size in sizes %}
+        {{ image.src|resize(size, 0, (objectFit)) }} {{ size }}w{{ loop.last ? '' : ',' }}
+      {% endfor %}
+    "
+    data-sizes="auto"
+  {% else %}
+    src="{{image.src}}"
+  {% endif %}
+
+  alt="{{ image.alt ?: image.title }}"
+  class="{{ imageClasses }} {{ object_position }} {{ lazyload }}"
+
+  {% if gallery %}
+    data-pswp="{{ gallery }}"
+    data-pswp-src="{{image.src }}"
+    data-pswp-size="{{ image.width }}x{{ image.height }}"
+    data-pswp-title="{{image.alt}}"
+  {% endif %}
+ />

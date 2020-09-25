@@ -35,5 +35,20 @@
 
   {% include 'includes/_favicons.twig' %}
 
+  {% if reCaptchaKey and reCaptchaSecret %}
+	  <meta name="_recaptcha" content="{{ reCaptchaKey }}">
+	{% endif %}
+
+  {% if googleAnalyticsAPIKey %}
+	  <!-- Google Analytics -->
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', '{{ googleAnalyticsAPIKey }}', 'auto');
+    ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+	{% endif %}
+
   {{function('wp_head')}}
 </head>

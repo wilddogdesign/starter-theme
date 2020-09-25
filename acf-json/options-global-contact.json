@@ -1,0 +1,166 @@
+{
+    "key": "options-global-contact",
+    "title": "Options Global Contact",
+    "fields": [
+        {
+            "key": "field_5e6a6e0474301",
+            "label": "Contact Information",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5e6a6e110193b",
+            "label": "Phone number",
+            "name": "global_contact__phone",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f05ba95cb261",
+            "label": "Address",
+            "name": "global_contact__address",
+            "type": "textarea",
+            "instructions": "Enter each address line on new line",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": 4,
+            "new_lines": "br"
+        },
+        {
+            "key": "field_5f05bb32cb266",
+            "label": "Social Media",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+          "key": "field_facebook",
+          "label": "Facebook",
+          "name": "global_social__facebook",
+          "type": "url",
+          "instructions": "",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+              "width": "",
+              "class": "",
+              "id": ""
+          },
+          "hide_admin": 0,
+          "default_value": "",
+          "placeholder": ""
+        },
+        {
+            "key": "field_5e6a6bdbdd8ed",
+            "label": "Twitter",
+            "name": "global_social__twitter",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+          "key": "field_instagram",
+          "label": "Instagram",
+          "name": "global_social__instagram",
+          "type": "url",
+          "instructions": "",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+              "width": "",
+              "class": "",
+              "id": ""
+          },
+          "hide_admin": 0,
+          "default_value": "",
+          "placeholder": ""
+        },
+        {
+            "key": "field_5e6a6be4dd8ee",
+            "label": "LinkedIn",
+            "name": "global_social__linkedin",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "wdd-contact-options"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content"
+    ],
+    "active": 1,
+    "description": "",
+    "modified": 1598366613
+}
