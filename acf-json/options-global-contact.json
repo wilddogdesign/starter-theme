@@ -40,6 +40,25 @@
             "maxlength": ""
         },
         {
+            "key": "field_5f748f5074d97",
+            "label": "Email",
+            "name": "global_contact__email",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5f05ba95cb261",
             "label": "Address",
             "name": "global_contact__address",

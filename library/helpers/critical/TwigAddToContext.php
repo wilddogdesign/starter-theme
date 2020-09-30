@@ -43,6 +43,7 @@ class TwigAddToContext
 
         // Contact Information
         $context['globalPhoneNumber'] = get_field('global_contact__phone', 'options');
+        $context['globalEmail'] = get_field('global_contact__email', 'options');
         $context['globalAddress'] = get_field('global_contact__address', 'options');
 
         // Socials
