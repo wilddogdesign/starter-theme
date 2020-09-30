@@ -41,11 +41,15 @@ class TwigAddToContext
         // Global Pages
         $context['globalContactPage'] = get_field('global_pages__contact', 'options') ? new TimberPost(get_field('global_pages__contact', 'options')) : false;
 
+        // Contact Information
+        $context['globalPhoneNumber'] = get_field('global_contact__phone', 'options');
+        $context['globalAddress'] = get_field('global_contact__address', 'options');
+
         // Socials
-        $context['facebook'] = get_field('global_social__facebook', 'options');
-        $context['twitter'] = get_field('global_social__twitter', 'options');
-        $context['instagram'] = get_field('global_social__instagram', 'options');
-        $context['linkedin'] = get_field('global_social__linkedin', 'options');
+        $context['socials']['facebook'] = get_field('global_social__facebook', 'options');
+        $context['socials']['twitter'] = get_field('global_social__twitter', 'options');
+        $context['socials']['instagram'] = get_field('global_social__instagram', 'options');
+        $context['socials']['linkedin'] = get_field('global_social__linkedin', 'options');
 
         // CSS
         $fileLocation = glob('app/themes/bedrock-theme/static/css/main-*.css')[0];
