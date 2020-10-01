@@ -8,9 +8,9 @@ class AdminPageFormEntries
     public function __construct()
     {
         /* Hooks all required actions by this class */
-        add_filter('manage_entry_posts_columns', array($this, 'setColumns'));
+        add_filter('manage_form_entry_posts_columns', array($this, 'setColumns'));
         add_filter('list_table_primary_column', array($this, 'setPrimaryColumn'), 10, 2);
-        add_action('manage_entry_posts_custom_column', array($this, 'populateColumns'), 10, 2);
+        add_action('manage_form_entry_posts_custom_column', array($this, 'populateColumns'), 10, 2);
     }
 
     // Add additonal columns in Form Entries
@@ -21,7 +21,7 @@ class AdminPageFormEntries
         $defaults = array(
             'cb'            => $defaults['cb'],
             'name'          => __('Title'),
-            'form'          => $defaults['form'],
+            'form'          => __('Form'),
             'sub_date'      => __('Submission Date'),
             'contact_name'  => __('Name'),
             'email'         => __('Email'),
@@ -34,7 +34,7 @@ class AdminPageFormEntries
     // Set default column
     public function setPrimaryColumn($default, $screen)
     {
-        if ('entry' === $screen) {
+        if ('form_entry' === $screen) {
             $default = 'name';
         }
 
@@ -48,6 +48,10 @@ class AdminPageFormEntries
             case 'name':
                 // Title column
                 echo '<a href="' . get_edit_post_link($id) . '"><strong>Entry: ' . $id . '</strong></a>';
+                break;
+            case 'form':
+                // Form column
+                echo get_field('form_type', $id);
                 break;
             case 'sub_date':
                 // Date column
