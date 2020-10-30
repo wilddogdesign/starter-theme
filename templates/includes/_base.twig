@@ -8,18 +8,25 @@
   {% include 'includes/_head.twig' %}
 
   <body class="{{body_class}} {% block template_class %}{% endblock %}" data-template="base.twig">
+    {% include 'includes/jla-scripts/_google-tag-manager-body.twig' %}
+
     {% if 'offline' not in body_class %}
       {% include "includes/_header.twig" %}
     {% endif %}
 
     <div class="o-main" id="main" role="main">
-      {% block content %}{% endblock %}
+      {% block content %}
+      {% endblock %}
     </div>
 
     {% if 'offline' not in body_class %}
       {% include "includes/_footer.twig" %}
-      {% block on_page_styles %}{% endblock %}
+
+      {% block on_page_styles %}
+      {% endblock %}
     {% endif %}
+
+    <script>window.GOOGLE_MAPS_API_KEY = "{{ googleMapsAPIKey }}";</script>
 
     {{function('wp_footer')}}
   </body>

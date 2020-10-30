@@ -1,45 +1,53 @@
 <?php
 
-$example_tax_labels = array(
-    'name'                       => _x('Example Taxonomies', 'Taxonomy General Name', 'bedrock'),
-    'singular_name'              => _x('Example Taxonomy', 'Taxonomy Singular Name', 'bedrock'),
-    'menu_name'                  => __('Example Taxonomies', 'bedrock'),
-    'all_items'                  => __('All Example Taxonomies', 'bedrock'),
-    'parent_item'                => __('Parent Item', 'bedrock'),
-    'parent_item_colon'          => __('Parent Item:', 'bedrock'),
-    'new_item_name'              => __('New Example Taxonomy', 'bedrock'),
-    'add_new_item'               => __('Add New Example Taxonomy', 'bedrock'),
-    'edit_item'                  => __('Edit Example Taxonomy', 'bedrock'),
-    'update_item'                => __('Update Example Taxonomy', 'bedrock'),
-    'view_item'                  => __('View Example Taxonomy', 'bedrock'),
-    'separate_items_with_commas' => __('Separate items with commas', 'bedrock'),
-    'add_or_remove_items'        => __('Add or remove News Example Taxonomy', 'bedrock'),
-    'choose_from_most_used'      => __('Choose from the most used', 'bedrock'),
-    'popular_items'              => __('Popular Example Taxonomies', 'bedrock'),
-    'search_items'               => __('Search Example Taxonomies', 'bedrock'),
-    'not_found'                  => __('Not Found', 'bedrock'),
-    'no_terms'                   => __('No Example Taxonomies', 'bedrock'),
-    'items_list'                 => __('Example Taxonomies list', 'bedrock'),
-    'items_list_navigation'      => __('Example Taxonomies list navigation', 'bedrock'),
+// Replace these variables
+$singlar = 'Example';
+$plural = 'Examples';
+
+$labels = array(
+    'name'                  => _x($plural, 'Post Type General Name', 'wdd'),
+    'singular_name'         => _x($singlar, 'Post Type Singular Name', 'wdd'),
+    'menu_name'             => __($plural, 'wdd'),
+    'name_admin_bar'        => __($plural, 'wdd'),
+    'archives'              => __($plural, 'wdd'),
+    'parent_item'           => __('Parent Item', 'wdd'),
+    'parent_item_colon'     => __('Parent Item:', 'wdd'),
+    'all_items'             => __($plural, 'wdd'),
+    'add_new_item'          => __('Add a New ' . $singlar, 'wdd'),
+    'add_new'               => __('Add New', 'wdd'),
+    'new_item'              => __('New ' . $singlar, 'wdd'),
+    'edit_item'             => __('Edit ' . $singlar, 'wdd'),
+    'update_item'           => __('Update ' . $singlar, 'wdd'),
+    'view_item'             => __('View ' . $singlar, 'wdd'),
+    'search_items'          => __('Search ' . $plural, 'wdd'),
+    'not_found'             => __('Not found', 'wdd'),
+    'not_found_in_trash'    => __('Not found in Trash', 'wdd'),
+    'insert_into_item'      => __('Insert into item', 'wdd'),
+    'uploaded_to_this_item' => __('Uploaded to this item', 'wdd'),
+    'items_list'            => __('Items list', 'wdd'),
+    'items_list_navigation' => __('Items list navigation', 'wdd'),
+    'filter_items_list'     => __('Filter items list', 'wdd'),
 );
-$example_tax_rewrite = array(
+$reWriteRules = array(
     'slug'                  => 'example-taxnomies',
     'with_front'            => false,
 );
-$example_tax_args = array(
-    'labels'                => $example_tax_labels,
+$args = array(
+    'labels'                => $labels,
     'hierarchical'          => true,
     'public'                => true,
     'show_ui'               => true,
     'show_admin_column'     => true,
     'show_in_nav_menus'     => false,
     'show_tagcloud'         => false,
-    'rewrite'               => $example_tax_rewrite,
+    'rewrite'               => $reWriteRules,
 );
+
+// Please use '-' in the name and not underscores
 register_taxonomy(
     'example-taxonomies',
     array(
         'example',
     ),
-    $example_tax_args
+    $args
 );

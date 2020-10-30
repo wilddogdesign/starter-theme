@@ -84,14 +84,12 @@ class StarterSite extends Timber\Site
     public function criticalHelpers()
     {
         // Include Critical Helpers
-        require_once('library/helpers/critical/ThemeSupport.php');
-        require_once('library/helpers/critical/RegisterMenus.php');
+
 
         // Not Admin Page
         if (!is_admin()) {
             // Include Critical Helpers
-            require_once('library/helpers/critical/TwigAddToContext.php');
-            require_once('library/helpers/critical/TwigExtensions.php');
+
         }
     }
 
@@ -106,21 +104,25 @@ class StarterSite extends Timber\Site
         // Not Admin Page
         if (!is_admin()) {
             add_action('init', array($this, 'criticalScripts'));
-            add_filter('timber/context', array($this, 'addToContext'));
-            add_filter('timber/twig', array($this, 'addToTwig'));
+            add_filter('timber/context', array($this, 'timberAddToContext'));
+            add_filter('timber/twig', array($this, 'timberAddToTwig'));
         }
     }
 
     // Needed on both the front and backend
     public function criticalThemeSupport()
     {
-        new ThemeSupport();
+        require_once('library/addThemeSupport.php');
+        addThemeSupport();
     }
 
     // Needed on both the front and backend
     public function criticalRegisterMenus()
     {
-        new RegisterMenus();
+        register_nav_menus(array(
+            'primary_menu'          => __('Main Menu', 'wdd'),
+            'footer_menu'           => __('Footer Menu', 'wdd'),
+        ));
     }
 
     // Needed on both the front and backend
@@ -142,12 +144,14 @@ class StarterSite extends Timber\Site
         require_once('library/scripts.php');
     }
 
-    public function addToContext($context)
+    public function timberAddToContext($context)
     {
+        require_once('library/timber-addToContext.php');
+
         // Site Information
         $context['site'] = $this;
         $context['site_url'] = get_home_url();
-        $context = TwigAddToContext::addToContext($context);
+        $context = addToContext($context);
 
         if (isset($_GET["form-status"]) && $_GET["form-status"] == 'error' && !empty($_COOKIE['form_errors'])) {
             $context['form_errors'] = json_decode(stripslashes($_COOKIE['form_errors']));
@@ -165,11 +169,10 @@ class StarterSite extends Timber\Site
         return $context;
     }
 
-    public function addToTwig($twig)
+    public function timberAddToTwig($twig)
     {
-        $twig = TwigExtensions::addToTwig($twig);
-
-        return $twig;
+        require_once('library/timber-addToTwig.php');
+        return addToTwig($twig);
     }
 
     // Link to Admin JS file

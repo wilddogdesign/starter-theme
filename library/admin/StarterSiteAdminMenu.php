@@ -69,6 +69,16 @@ class StarterSiteAdminMenu
                 'redirect'      => false
             )
         );
+        acf_add_options_sub_page(
+            array(
+                'page_title'    => 'Default Values',
+                'menu_title'    => 'Default Values',
+                'menu_slug'     => 'wdd-default-values-options',
+                'capability'    => 'edit_posts',
+                'parent_slug'   => 'wdd-global-options',
+                'redirect'      => false
+            )
+        );
 
         acf_add_options_sub_page(
             array(
@@ -102,7 +112,6 @@ class StarterSiteAdminMenu
         remove_menu_page('edit-comments.php'); //Comments
         remove_menu_page('link-manager.php'); // Links
         remove_menu_page('themes.php'); // Appearance
-        remove_menu_page('edit.php?post_type=af_form'); // ACF Forms
         //remove_menu_page('edit.php?post_type=acf-field-group'); //Custom fields
 
         // Submenu Pages

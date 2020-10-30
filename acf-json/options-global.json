@@ -38,6 +38,80 @@
             "maxlength": ""
         },
         {
+            "key": "field_5f9ab324bcfbd",
+            "label": "Google Maps",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5f311a7b26f9d",
+            "label": "Google Maps API Key",
+            "name": "google__maps_api_key",
+            "type": "text",
+            "instructions": "Please generate your own key and replace the one below as the maps will stop working once the free allowance is exceeded.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f9ab34a15763",
+            "label": "Google Tag Manager",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5f9ab35115764",
+            "label": "Google Tag Manager ID",
+            "name": "google__tag_manager_id",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5e7354cf79887",
             "label": "Offline Settings",
             "name": "",
@@ -55,7 +129,7 @@
             "endpoint": 0
         },
         {
-            "key": "field_5e78d1ab50c7c",
+            "key": "field_5f771d322b51a",
             "label": "Offline Title",
             "name": "offline_title",
             "type": "text",
@@ -67,7 +141,6 @@
                 "class": "",
                 "id": ""
             },
-            "hide_admin": 0,
             "default_value": "You appear to be offline",
             "placeholder": "",
             "prepend": "",
@@ -75,7 +148,7 @@
             "maxlength": ""
         },
         {
-            "key": "field_5e78d1ba50c7d",
+            "key": "field_5f771d362b51b",
             "label": "Offline Content",
             "name": "offline_content",
             "type": "wysiwyg",
@@ -87,10 +160,63 @@
                 "class": "",
                 "id": ""
             },
-            "hide_admin": 0,
             "default_value": "You appear to have lost your connection to the Internet. Once you reconnect we'll get back to showing you your content.",
             "tabs": "all",
-            "toolbar": "full",
+            "toolbar": "bold_italic_links_only",
+            "media_upload": 0,
+            "delay": 1
+        },
+        {
+            "key": "field_5f771c40ffa9d",
+            "label": "404 Settings",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5e78d1ab50c7c",
+            "label": "404 Title",
+            "name": "404_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Oops!",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5e78d1ba50c7d",
+            "label": "404 Content",
+            "name": "404_content",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "404 - Page not found\r\n\r\nThe page you are looking for might have been removed had its name changed or is temporarily unavailable.",
+            "tabs": "all",
+            "toolbar": "bold_italic_links_only",
             "media_upload": 0,
             "delay": 1
         }

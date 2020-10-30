@@ -1,37 +1,45 @@
 <?php
-$form_entry_labels = array(
-    'name'                  => _x('Form Entries', 'Post Type General Name', 'ws'),
-    'singular_name'         => _x('Form Entries', 'Post Type Singular Name', 'ws'),
-    'menu_name'             => __('Forms & Entries', 'ws'),
-    'name_admin_bar'        => __('Form Entries', 'ws'),
-    'archives'              => __('Form Entries', 'ws'),
-    'parent_item_colon'     => __('Parent item:', 'ws'),
-    'all_items'             => __('Form Entries', 'ws'),
-    'add_new_item'          => __('Add a New Entry', 'ws'),
-    'add_new'               => __('Add New', 'ws'),
-    'new_item'              => __('New Entry', 'ws'),
-    'edit_item'             => __('Edit Entry', 'ws'),
-    'update_item'           => __('Update Entry', 'ws'),
-    'view_item'             => __('View Entry', 'ws'),
-    'search_items'          => __('Search Form Entries', 'ws'),
-    'not_found'             => __('Not found', 'ws'),
-    'not_found_in_trash'    => __('Not found in Trash', 'ws'),
-    'insert_into_item'      => __('Insert into item', 'ws'),
-    'uploaded_to_this_item' => __('Uploaded to this item', 'ws'),
-    'items_list'            => __('Items list', 'ws'),
-    'items_list_navigation' => __('Items list navigation', 'ws'),
-    'filter_items_list'     => __('Filter items list', 'ws'),
+
+// Replace these variables
+$singlar = 'Form Entry';
+$plural = 'Form Entries';
+
+// The labels used in various places for this custom post type
+$labels = array(
+    'name'                  => _x($plural, 'Post Type General Name', 'wdd'),
+    'singular_name'         => _x($singlar, 'Post Type Singular Name', 'wdd'),
+    'menu_name'             => __($plural, 'wdd'),
+    'name_admin_bar'        => __($plural, 'wdd'),
+    'archives'              => __($plural, 'wdd'),
+    'parent_item_colon'     => __('Parent item:', 'wdd'),
+    'all_items'             => __($plural, 'wdd'),
+    'add_new_item'          => __('Add a New ' . $singlar, 'wdd'),
+    'add_new'               => __('Add New', 'wdd'),
+    'new_item'              => __('New ' . $singlar, 'wdd'),
+    'edit_item'             => __('Edit ' . $singlar, 'wdd'),
+    'update_item'           => __('Update ' . $singlar, 'wdd'),
+    'view_item'             => __('View ' . $singlar, 'wdd'),
+    'search_items'          => __('Search ' . $plural, 'wdd'),
+    'not_found'             => __('Not found', 'wdd'),
+    'not_found_in_trash'    => __('Not found in Trash', 'wdd'),
+    'insert_into_item'      => __('Insert into item', 'wdd'),
+    'uploaded_to_this_item' => __('Uploaded to this item', 'wdd'),
+    'items_list'            => __('Items list', 'wdd'),
+    'items_list_navigation' => __('Items list navigation', 'wdd'),
+    'filter_items_list'     => __('Filter items list', 'wdd'),
 );
-$form_entry_rewrite = array(
+
+// Rewrite rules for the post type.
+$reWriteRules = array(
     'slug'                  => 'entries',
-    'with_front'            => false,
-    'pages'                 => false,
-    'feeds'                 => false,
+    'with_front'            => true,
 );
-$form_entry_args = array(
-    'label'                 => __('Form Entries', 'ws'),
-    'labels'                => $form_entry_labels,
-    'supports'              => array('title', 'revisions', 'thumbnail', 'excerpt'),
+
+// Arguments for creating the post type so labels etc.
+$args = array(
+    'label'                 => __($singlar, 'wdd'),
+    'labels'                => $labels,
+    'supports'              => array('title', 'revisions', 'thumbnail'),
     'hierarchical'          => false,
     'public'                => true,
     'show_ui'               => true,
@@ -43,7 +51,10 @@ $form_entry_args = array(
     'has_archive'           => false,
     'exclude_from_search'   => false,
     'publicly_queryable'    => false,
-    'rewrite'               => $form_entry_rewrite,
+    'rewrite'               => $reWriteRules,
     'capability_type'       => 'page',
 );
-register_post_type('form_entry', $form_entry_args);
+
+// Then we register the post type with the system
+// Please use underscores in the name and not '-' to prevent issues further down the line
+register_post_type('form_entry', $args);

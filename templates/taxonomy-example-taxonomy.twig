@@ -1,12 +1,11 @@
-{# UNUSED #}
 {% extends "includes/_base.twig" %}
 
 {% block content %}
 
   <div class="o-wrapper">
     <div class="o-freetext">
-      <h1>{{post.title}}</h1>
-      {{post.content|wpautop}}
+      <h1>{{post.name}}</h1>
+      {{post.description|wpautop}}
     </div>
   </div>
 

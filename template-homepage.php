@@ -3,6 +3,7 @@
 /**
  * Template Name: Homepage Template
  * Template Post Type: page
+ * Front End Template: index.njk - https://abc.html
  */
 
 $context = Timber::get_context();

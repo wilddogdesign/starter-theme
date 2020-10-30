@@ -12,7 +12,10 @@ if (!is_admin()) {
 // });
 
 Routes::map('form-handler', function () {
-    Routes::load('library/forms/FormHandler.php');
+    require_once(get_template_directory() . '/library/forms/FormHandler.php');
+    new FormHandler();
+
+    exit;
 });
 
 //TODO make sure extra pages go into sitemap

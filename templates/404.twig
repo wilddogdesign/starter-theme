@@ -1,5 +1,11 @@
-{% extends "includes/_base.twig" %}
+{% extends "base.twig" %}
 
 {% block content %}
-	Sorry, we couldn't find what you're looking for.
+
+  <div class="o-wrapper">
+    <h1>{{ fourZeroFourTitle }}</h1>
+    {{ fourZeroFourContent|wpautop }}
+    </div>
+  </div>
+
 {% endblock %}
