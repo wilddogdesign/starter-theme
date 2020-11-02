@@ -28,12 +28,15 @@ class SavePostActions
             return;
         }
 
-        $imageID = get_field('hero_image', $post_id)['id'];
-        if ($imageID) {
-            wp_update_post([
-                'ID' => $post_id,
-                '_thumbnail_id' => $imageID
-            ]);
+        $currentThumbnail = get_the_post_thumbnail($post_id);
+        if ($currentThumbnail == false) {
+            $imageID = get_field('hero__image', $post_id)['id'];
+            if ($imageID) {
+                wp_update_post([
+                    'ID' => $post_id,
+                    '_thumbnail_id' => $imageID
+                ]);
+            }
         }
     }
 
