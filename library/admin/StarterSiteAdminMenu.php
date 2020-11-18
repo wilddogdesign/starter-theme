@@ -253,6 +253,28 @@ class StarterSiteAdminMenu
                 background: #313131;
             }
 
+            input[name=publish].button-primary, input[name=publish].button-primary:hover {
+                background: #4CAF50;
+            }
+
+            #wpcontent {
+                margin-bottom: 40px;
+            }
+
+            #preview-action {
+                display: none;
+            }
+
+            #TB_window #wpcontent {
+                margin-left: 0;
+            }
+
+            #TB_window #wpadminbar,
+            #TB_window #adminmenumain,
+            #TB_window .notice,
+            #TB_window .screen-meta-links {
+                display: none;
+            }
         </style>";
     }
 }
