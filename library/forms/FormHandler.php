@@ -29,14 +29,9 @@ class FormHandler
                 $this->submitContactForm();
 
                 break;
-
-            default:
-                wp_safe_redirect('/');
-
-                exit;
-
-                break;
         }
+
+        $this->redirectBackWithError();
     }
 
     /**
@@ -81,21 +76,18 @@ class FormHandler
      */
     private function submitContactForm()
     {
-        if (isset($_POST['wdd_contact_form_wpnonce_name']) && wp_verify_nonce($_POST['wdd_contact_form_wpnonce_name'], 'wdd_contact_form_wpnonce_action')) {
-            require_once('ContactFormSubmission.php');
+        require_once('ContactFormSubmission.php');
+        $form = new ContactFormSubmission();
 
-            $form = new ContactFormSubmission();
+        // if successful the form will redirect and not return errors
+        $errors = $form->submit();
 
-            // if successful the form will redirect and not return errors
-            $errors = $form->submit();
+        if ($errors) {
+            $this->redirectBackWithError($errors);
+        } else {
+            $formID = isset($_POST['id']) ? $_POST['id'] : '';
 
-            if ($errors) {
-                $this->redirectBackWithError($errors);
-            } else {
-                $formID = isset($_POST['id']) ? $_POST['id'] : '';
-
-                wp_safe_redirect($this->redirectURL . "?form={$formID}&form-status=success");
-            }
+            wp_safe_redirect($this->redirectURL . "?form={$formID}&form-status=success");
         }
     }
 }
