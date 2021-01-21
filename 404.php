@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The template for displaying 404 pages (Not Found)
  *
@@ -10,4 +11,8 @@
  */
 
 $context = Timber::context();
-Timber::render( '404.twig', $context );
+
+$context['fourZeroFourTitle'] = get_field('404_title', 'options');
+$context['fourZeroFourContent'] = get_field('404_content', 'options');
+
+Timber::render('404.twig', $context);
