@@ -63,69 +63,56 @@ class StarterSite extends Timber\Site
     /** Add timber support. */
     public function __construct()
     {
-        $this->criticalHelpers();
-        $this->criticalActions();
-
-        if (is_admin()) {
-            $this->adminHelpers();
-            $this->adminActions();
-        } elseif (is_user_logged_in()) {
-            require_once('library/admin/StarterSiteAdminBar.php');
+        if (WP_ENV == 'development') {
+            $this->devHelpers();
         }
 
-        if (WP_ENV === 'development') {
-            $this->devHelpers();
+        if (WP_ENV == 'staging') {
+            require_once('library/helpers/dev/alerts.php');
+        }
+
+        $this->criticalFiles();
+        $this->criticalActions();
+
+        add_action('init', array($this, 'criticalLibraries'));
+        add_action('init', array($this, 'registerRoutes'));
+
+        add_action('after_setup_theme', array($this, 'themeSupport'));
+        add_action('after_setup_theme', array($this, 'registerMenus'));
+
+        if (is_admin()) {
+            // Admin only Functions
+            $this->adminFunctions();
+        } else {
+            // Non-Admin only Functions
+            require_once('library/admin/adminBar.php');
+
+            add_filter('timber/context', array($this, 'addToContext'));
+            add_filter('timber/twig', array($this, 'addToTwig'));
+            add_action('init', array($this, 'loadScripts'));
+        }
+
+        // CLI scripts
+        if (defined('WP_CLI') && WP_CLI) {
+            $this->loadCommands();
         }
 
         parent::__construct();
     }
 
     // Needed on both the front and backend
-    public function criticalHelpers()
+    public function criticalFiles()
     {
-        // Include Critical Helpers
-
-
-        // Not Admin Page
-        if (!is_admin()) {
-            // Include Critical Helpers
-
-        }
+        require_once('library/prioritisePaginationToSlug.php');
     }
 
     // Needed on both the front and backend
     public function criticalActions()
     {
-        add_action('after_setup_theme', array($this, 'criticalThemeSupport'));
-        add_action('after_setup_theme', array($this, 'criticalRegisterMenus'));
-        add_action('init', array($this, 'criticalLibraries'));
-        add_action('init', array($this, 'registerRoutes'));
-
-        // Not Admin Page
-        if (!is_admin()) {
-            add_action('init', array($this, 'criticalScripts'));
-            add_filter('timber/context', array($this, 'timberAddToContext'));
-            add_filter('timber/twig', array($this, 'timberAddToTwig'));
-        }
+        add_action('init', 'prioritisePaginationToSlug');
     }
 
-    // Needed on both the front and backend
-    public function criticalThemeSupport()
-    {
-        require_once('library/addThemeSupport.php');
-        addThemeSupport();
-    }
-
-    // Needed on both the front and backend
-    public function criticalRegisterMenus()
-    {
-        register_nav_menus(array(
-            'primary_menu'          => __('Main Menu', 'wdd'),
-            'footer_menu'           => __('Footer Menu', 'wdd'),
-        ));
-    }
-
-    // Needed on both the front and backend
+    /** This is where you can register custom post types and taxonomies. */
     public function criticalLibraries()
     {
         require_library_dir('post-types');
@@ -139,68 +126,58 @@ class StarterSite extends Timber\Site
     }
 
     // Needed on both the front and backend
-    public function criticalScripts()
+    public function themeSupport()
     {
-        require_once('library/scripts.php');
+        require_once('library/addThemeSupport.php');
     }
 
-    public function timberAddToContext($context)
+    // Needed on both the front and backend
+    public function registerMenus()
     {
-        require_once('library/timber-addToContext.php');
+        register_nav_menus(array(
+            'primary_menu'          => __('Main Menu', 'wdd'),
+            'footer_menu'           => __('Footer Menu', 'wdd'),
+        ));
+    }
 
-        // Site Information
+    public function adminFunctions()
+    {
+        require_once('library/admin/functions.php');
+    }
+
+    /** This is where you add some context
+     *
+     * @param string $context context['this'] Being the Twig's {{ this }}.
+     */
+    public function addToContext($context)
+    {
         $context['site'] = $this;
-        $context['site_url'] = get_home_url();
-        $context = addToContext($context);
 
-        if (isset($_GET["form-status"]) && $_GET["form-status"] == 'error' && !empty($_COOKIE['form_errors'])) {
-            $context['form_errors'] = json_decode(stripslashes($_COOKIE['form_errors']));
-            $context['old_inputs'] = json_decode(stripslashes($_COOKIE['old_inputs']));
-        }
-
-        // TODO
-        $liveUrls = [
-            'tbc.com',
-            'tbc.wilddogdevelopment.com',
-        ];
-
-        $context['is_live'] = in_array($_SERVER['HTTP_HOST'], $liveUrls);
+        require_once('library/twig-context.php');
 
         return $context;
     }
 
-    public function timberAddToTwig($twig)
+    /** This is where you can add your own functions to twig.
+     *
+     * @param string $twig get extension.
+     */
+    public function addToTwig($twig)
     {
-        require_once('library/timber-addToTwig.php');
-        return addToTwig($twig);
+        require_once('library/twig-extensions.php');
+
+        return $twig;
     }
 
-    // Link to Admin JS file
-    public function includeJS()
+    public function loadScripts()
     {
-        wp_enqueue_script('js-file', get_template_directory_uri() . '/library/js/admin.js', array(), false, true);
-    }
-
-    // Only needed on the backend
-    public function adminHelpers()
-    {
-        // Additional Helpers
-
-        require_library_dir('admin'); // Admin Menu, Admin Bar, Image Control
-        require_library_dir('admin/acf-fields'); // Dynamic ACF Fields
-        require_library_dir('admin/helpers'); // Admin Helpers
-        require_library_dir('admin/pages'); // Admin Pages
-    }
-
-    // Only needed on the backend
-    public function adminActions()
-    {
-        add_action('admin_enqueue_scripts', array($this, 'includeJS')); // ACF JSON Script
+        require_once('library/scripts.php');
     }
 
     public function devHelpers()
     {
-        require_once('library/helpers/dd.php');
+        require_once('library/helpers/dev/dd.php');
+        require_once('library/helpers/dev/jd.php');
     }
 }
 
