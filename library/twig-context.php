@@ -35,11 +35,14 @@ $context['is_staging'] = WP_ENV === 'staging';
 $context['reCaptchaKey'] = get_field('google__recaptcha_key', 'options') ?: '';
 $context['reCaptchaSecret'] = get_field('google__recaptcha_secret', 'options') ?: '';
 
-// Google tag manager
-// $context['googleTagManagerId'] = get_field('google__tag_manager_id', 'options') ?: '';
-
-// Google Analytics
+// Google analytics
 $context['googleAnalyticsAPIKey'] = get_field('google__analytics_key', 'options') ?: false;
+
+// Google Tag Manager
+$context['googleTagManagerId'] = get_field('google__tag_manager_id', 'options') ?: '';
+
+// Facebook Pixel ID
+$context['facebookPixelID'] = get_field('global__facebook_pixel_ID', 'options') ?: '';
 
 // Google Maps
 $context['googleMapsAPIKey'] = get_field('google__maps_api_key', 'options') ?: false;

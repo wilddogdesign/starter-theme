@@ -112,6 +112,43 @@
             "maxlength": ""
         },
         {
+            "key": "field_5f7ab34a15763",
+            "label": "Facebook Pixel Tracking",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5f9ab37115764",
+            "label": "Facebook Pixel Tracking ID",
+            "name": "global__facebook_pixel_ID",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "hide_admin": 0,
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5e7354cf79887",
             "label": "Offline Settings",
             "name": "",
