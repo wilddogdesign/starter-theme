@@ -33,6 +33,9 @@ function addACFOptionsPages()
             'menu_title'    => 'Global Options',
             'menu_slug'     => 'wdd-global-options',
             'capability'    => 'edit_posts',
+            'parent_slug'   => '',
+            'position'      => false,
+            'icon_url'      => false,
             'redirect'      => false
         )
     );
