@@ -8,7 +8,7 @@
   {% include 'includes/_head.twig' %}
 
   <body class="{{body_class}} {% block template_class %}{% endblock %}" data-template="base.twig">
-    {% include 'includes/site-scripts/_google-tag-manager-body.twig' %}
+    {# {% include 'includes/site-scripts/_google-tag-manager-body.twig' %} #}
 
     {% if 'offline' not in body_class %}
       {% include "includes/_header.twig" %}
