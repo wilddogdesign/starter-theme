@@ -44,59 +44,55 @@ function addACFOptionsPages()
         return;
     }
 
-    acf_add_options_sub_page(
-        array(
-            'page_title'    => 'General',
-            'menu_title'    => 'General',
-            'menu_slug'     => 'wdd-general-options',
-            'capability'    => 'edit_posts',
-            'parent_slug'   => 'wdd-global-options',
-            'redirect'      => false
-        )
-    );
+    acf_add_options_sub_page([
+        'post_id'       => 'global-options',
+        'page_title'    => 'General',
+        'menu_title'    => 'General',
+        'menu_slug'     => 'canvas-general-options',
+        'capability'    => 'edit_posts',
+        'parent_slug'   => 'canvas-global-options',
+        'redirect'      => false
+    ]);
 
-    acf_add_options_sub_page(
-        array(
-            'page_title'    => 'Contact',
-            'menu_title'    => 'Contact',
-            'menu_slug'     => 'wdd-contact-options',
-            'capability'    => 'edit_posts',
-            'parent_slug'   => 'wdd-global-options',
-            'redirect'      => false
-        )
-    );
-    acf_add_options_sub_page(
-        array(
-            'page_title'    => 'Default Values',
-            'menu_title'    => 'Default Values',
-            'menu_slug'     => 'wdd-default-values-options',
-            'capability'    => 'edit_posts',
-            'parent_slug'   => 'wdd-global-options',
-            'redirect'      => false
-        )
-    );
+    acf_add_options_sub_page([
+        'post_id'       => 'global-contact',
+        'page_title'    => 'Contact',
+        'menu_title'    => 'Contact',
+        'menu_slug'     => 'canvas-contact-options',
+        'capability'    => 'edit_posts',
+        'parent_slug'   => 'canvas-global-options',
+        'redirect'      => false
+    ]);
 
-    acf_add_options_sub_page(
-        array(
-            'page_title'    => 'Pages',
-            'menu_title'    => 'Pages',
-            'menu_slug'     => 'wdd-pages-options',
-            'capability'    => 'edit_posts',
-            'parent_slug'   => 'wdd-global-options',
-            'redirect'      => false
-        )
-    );
+    acf_add_options_sub_page([
+        'post_id'       => 'global-defaults',
+        'page_title'    => 'Default Values',
+        'menu_title'    => 'Default Values',
+        'menu_slug'     => 'canvas-default-values-options',
+        'capability'    => 'edit_posts',
+        'parent_slug'   => 'canvas-global-options',
+        'redirect'      => false
+    ]);
 
-    acf_add_options_sub_page(
-        array(
-            'page_title'    => 'Form Settings',
-            'menu_title'    => 'Form Settings',
-            'menu_slug'     => 'wdd-forms-options',
-            'capability'    => 'edit_posts',
-            'parent_slug'   => 'edit.php?post_type=form_entry',
-            'redirect'      => false
-        )
-    );
+    acf_add_options_sub_page([
+        'post_id'       => 'global-pages',
+        'page_title'    => 'Pages',
+        'menu_title'    => 'Pages',
+        'menu_slug'     => 'canvas-pages-options',
+        'capability'    => 'edit_posts',
+        'parent_slug'   => 'canvas-global-options',
+        'redirect'      => false
+    ]);
+
+    acf_add_options_sub_page([
+        'post_id'       => 'form-settings',
+        'page_title'    => 'Form Settings',
+        'menu_title'    => 'Form Settings',
+        'menu_slug'     => 'canvas-forms-options',
+        'capability'    => 'edit_posts',
+        'parent_slug'   => 'edit.php?post_type=form_entry',
+        'redirect'      => false
+    ]);
 
     acf_add_options_sub_page([
         'post_id' => 'smtp',
