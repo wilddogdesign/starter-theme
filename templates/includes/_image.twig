@@ -2,7 +2,7 @@
   'image': Image(),
   'imageClasses': '',
   'objectFit': '',
-  'sizes': ['480','768','1024','1200','1600']
+  'sizes': ['480','768','1024','1280','1600']
   'gallery': 'main-gallery'
 }%} #}
 
@@ -10,9 +10,9 @@
   {% set objectFit = image.autop__image_position ?: 'center' %}
 {% endif %}
 {% if objectFit and objectFit != 'center' %}
-  {% set object_position = 'u-object-fit u-object-position--'~objectFit %}
+  {% set objectPosition = 'u-object-fit u-object-position--'~objectFit %}
 {% elseif objectFit %}
-  {% set object_position = 'u-object-fit u-object-position' %}
+  {% set objectPosition = 'u-object-fit u-object-position' %}
 {% endif %}
 
 <img
@@ -29,11 +29,11 @@
     "
     data-sizes="auto"
   {% else %}
-    src="{{ image.src }}"
+    src="{{ image.src|resize(100,100) }}"
   {% endif %}
 
   alt="{{ image.alt ?: image.title }}"
-  class="{{ imageClasses }} {{ object_position }}{{ sizes ? ' lazyload' : '' }}"
+  class="{{ imageClasses }} {{ objectPosition }} lazyload"
 
   {% if gallery %}
     data-pswp="{{ gallery }}"
