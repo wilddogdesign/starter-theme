@@ -81,6 +81,7 @@ class StarterSite extends Timber\Site
         add_action('after_setup_theme', array($this, 'registerMenus'));
 
         if (is_admin()) {
+            // Determines whether the current request is for an administrative interface page.
             // Admin only Functions
             $this->adminFunctions();
         } else {

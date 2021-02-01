@@ -10,7 +10,7 @@ add_action('admin_menu', 'addAdminMenuItems');
 add_action('admin_menu', 'changeAdminMenuParent');
 add_action('admin_menu', 'addAdminMenuSeparators');
 
-add_action('admin_bar_menu', 'customDashboardLogo', 40);
+add_action('admin_bar_menu', 'customDashboardLogo', 40); // Function in adminBar.php.
 
 add_filter('admin_footer_text', 'customFooter');
 
@@ -206,19 +206,6 @@ function customMenuOrder($menu_ord)
 // {
 //     esc_html_e('Admin Page Test', 'wdd');
 // }
-
-// Custom Logo on WP Admin Bar
-function customDashboardLogo($wp_admin_bar)
-{
-    $title = get_bloginfo('name');
-    $wp_admin_bar->add_node(
-        array(
-            'id'    => 'alt-site-name',
-            'title' => '<img alt="logo" src="' . get_bloginfo('template_directory') . '/library/admin/logo.svg" style="height: 22px;margin: 3px 5px;float: left;"/>' . $title,
-            'href'  => (is_admin() || !current_user_can('read')) ? home_url('/') : admin_url(),
-        )
-    );
-}
 
 // Custom Backend Footer
 function customFooter()
