@@ -40,13 +40,13 @@ class ContactFormSubmission extends FormSubmission
 
             $this->saveEntry();
 
-            $sendEmail = get_field('contact_form__email_notifications_status', 'options');
+            $sendEmail = get_field('contact_form__email_notifications_status', 'form-settings');
 
             if ($sendEmail) {
                 $this->sendMail();
             }
 
-            $globalThankYouPage = get_field('contact_form__thank_you_page', 'options');
+            $globalThankYouPage = get_field('contact_form__thank_you_page', 'form-settings');
 
             if ($globalThankYouPage) {
                 wp_safe_redirect(get_permalink($globalThankYouPage->ID));
@@ -159,7 +159,7 @@ class ContactFormSubmission extends FormSubmission
 
         $subject = 'New Contact Form Submission - ' . $f['subject'];
 
-        $emailNotifcations = get_field('contact_form__email_notifications', 'options');
+        $emailNotifcations = get_field('contact_form__email_notifications', 'form-settings');
         if ($emailNotifcations) {
             foreach ($emailNotifcations as $notifcation) {
                 if ($notifcation['receiving_email_address']) {

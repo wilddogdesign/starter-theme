@@ -32,20 +32,20 @@ $context['is_staging'] = WP_ENV === 'staging';
  */
 
 // ReCaptcha
-$context['reCaptchaKey'] = get_field('google__recaptcha_key', 'options') ?: '';
-$context['reCaptchaSecret'] = get_field('google__recaptcha_secret', 'options') ?: '';
+$context['reCaptchaKey'] = get_field('google__recaptcha_key', 'form-settings') ?: '';
+$context['reCaptchaSecret'] = get_field('google__recaptcha_secret', 'form-settings') ?: '';
 
 // Google analytics
-$context['googleAnalyticsAPIKey'] = get_field('google__analytics_key', 'options') ?: false;
+$context['googleAnalyticsAPIKey'] = get_field('google__analytics_key', 'global-contact') ?: false;
 
 // Google Tag Manager
-$context['googleTagManagerId'] = get_field('google__tag_manager_id', 'options') ?: '';
+$context['googleTagManagerId'] = get_field('google__tag_manager_id', 'global-contact') ?: '';
 
 // Facebook Pixel ID
-$context['facebookPixelID'] = get_field('global__facebook_pixel_ID', 'options') ?: '';
+$context['facebookPixelID'] = get_field('global__facebook_pixel_ID', 'global-contact') ?: '';
 
 // Google Maps
-$context['googleMapsAPIKey'] = get_field('google__maps_api_key', 'options') ?: false;
+$context['googleMapsAPIKey'] = get_field('google__maps_api_key', 'global-contact') ?: false;
 
 /**
  * SEO

@@ -89,6 +89,8 @@ class FormHandler
 
             wp_safe_redirect($this->redirectURL . "?form={$formID}&form-status=success");
         }
+
+        die();
     }
 }
 

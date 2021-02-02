@@ -45,7 +45,7 @@ class FormSubmission
             return false;
         }
 
-        $secret = get_field('google__recaptcha_secret', 'options') ? get_field('google__recaptcha_secret', 'options') : false;
+        $secret = get_field('google__recaptcha_secret', 'form-settings') ? get_field('google__recaptcha_secret', 'form-settings') : false;
 
         // calling google recaptcha api.
         $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secret . "&response=" . $captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']);

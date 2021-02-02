@@ -12,7 +12,7 @@
 
 $context = Timber::context();
 
-$context['fourZeroFourTitle'] = get_field('404_title', 'options');
-$context['fourZeroFourContent'] = get_field('404_content', 'options');
+$context['fourZeroFourTitle'] = get_field('404_title', 'global-options');
+$context['fourZeroFourContent'] = get_field('404_content', 'global-options');
 
 Timber::render('404.twig', $context);
