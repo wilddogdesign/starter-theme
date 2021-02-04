@@ -29,5 +29,25 @@
     <script>window.GOOGLE_MAPS_API_KEY = "{{ googleMapsAPIKey }}";</script>
 
     {{function('wp_footer')}}
+
+    <script type="module">
+    import { Workbox } from 'https://storage.googleapis.com/workbox-cdn/releases/4.1.0/workbox-window.prod.mjs';
+    if ('serviceWorker' in navigator) {
+      const wb = new Workbox('/service-worker.js');
+      wb.addEventListener('waiting', function(event) {
+      console.log('new sw waiting');
+      function handleControllerEvent(event) {
+        console.log('reloading..');
+        window.location.reload();
+      }
+      // controlling works on chrome
+      wb.addEventListener('controlling', handleControllerEvent);
+      // controllerchange works on ios/safari
+      wb.addEventListener('controllerchange', handleControllerEvent);
+      wb.messageSW({ type: 'SKIP_WAITING' });
+      });
+      wb.register();
+    }
+    </script>
   </body>
 </html>
