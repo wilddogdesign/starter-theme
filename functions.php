@@ -179,6 +179,16 @@ class StarterSite extends Timber\Site
     {
         require_once('library/helpers/dev/dd.php');
         require_once('library/helpers/dev/jd.php');
+
+        // Use https://mailtrap.io/ for email testing
+        add_action('phpmailer_init', function ($phpmailer) {
+            $phpmailer->isSMTP();
+            $phpmailer->Host     = 'smtp.mailtrap.io';
+            $phpmailer->SMTPAuth = true;
+            $phpmailer->Port     = 2525;
+            $phpmailer->Username = getenv('MAILTRAP_USER');
+            $phpmailer->Password = getenv('MAILTRAP_PASSWORD');
+        }, 999);
     }
 }
 
