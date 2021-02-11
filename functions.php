@@ -186,7 +186,7 @@ class StarterSite extends Timber\Site
             $phpmailer->Host     = 'smtp.mailtrap.io';
             $phpmailer->SMTPAuth = true;
             $phpmailer->Port     = 2525;
-            $phpmailer->Username = getenv('MAILTRAP_USER');
+            $phpmailer->Username = getenv('MAILTRAP_USERNAME');
             $phpmailer->Password = getenv('MAILTRAP_PASSWORD');
         }, 999);
     }
