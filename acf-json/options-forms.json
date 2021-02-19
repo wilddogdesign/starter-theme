@@ -3,6 +3,60 @@
     "title": "Options Forms",
     "fields": [
         {
+            "key": "field_602e51b3b6a86",
+            "label": "Email Sender Settings",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_602e51bdb6a87",
+            "label": "'From' Email",
+            "name": "global_forms_from_email",
+            "type": "text",
+            "instructions": "Who the email will come 'from'",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "info@kiplingtours.com",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_602e52708a9cc",
+            "label": "'From' Name",
+            "name": "global_forms_from_name",
+            "type": "text",
+            "instructions": "Who the email will come 'from'",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Kipling Tours",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5e6a6a55dd8de",
             "label": "reCaptcha Settings",
             "name": "",
@@ -97,8 +151,8 @@
             "ui": 1
         },
         {
-            "key": "field_5f22c65940d96",
-            "label": "Email Notification Status",
+            "key": "field_contact_form__email_notifications_status",
+            "label": "Internal Email Notification Status",
             "name": "contact_form__email_notifications_status",
             "type": "true_false",
             "instructions": "",
@@ -116,8 +170,8 @@
             "ui_off_text": "Off"
         },
         {
-            "key": "field_5f22c64d40d95",
-            "label": "Email Notifications",
+            "key": "field_contact_form__email_notifications",
+            "label": "Internal Email Notifications",
             "name": "contact_form__email_notifications",
             "type": "repeater",
             "instructions": "",
@@ -135,7 +189,7 @@
             "button_label": "",
             "sub_fields": [
                 {
-                    "key": "field_5f23dd688b968",
+                    "key": "field_6024f136a2505",
                     "label": "Receiving Email Address",
                     "name": "receiving_email_address",
                     "type": "email",
@@ -153,6 +207,63 @@
                     "append": ""
                 }
             ]
+        },
+        {
+            "key": "field_602e4e945b8da",
+            "label": "Client Email Notification Status",
+            "name": "contact_form__client_email_notifications_status",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "On",
+            "ui_off_text": "Off"
+        },
+        {
+            "key": "field_602e4eed5b8dc",
+            "label": "Client Email Subject",
+            "name": "contact_form__client_email_subject",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Thank you for your enquiry",
+            "placeholder": "",
+            "prepend": "Subject:",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_602e4ebf5b8db",
+            "label": "Client Email Content",
+            "name": "contact_form__client_email_content",
+            "type": "wysiwyg",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "formats_bold_italic_links_lists_only",
+            "media_upload": 1,
+            "delay": 0
         }
     ],
     "location": [

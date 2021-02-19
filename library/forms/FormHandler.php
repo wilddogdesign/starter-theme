@@ -5,7 +5,6 @@ if (!defined('ABSPATH') || $_SERVER['REQUEST_METHOD'] === 'GET') {
 
     exit;
 }
-
 global $errors;
 
 class FormHandler
@@ -24,14 +23,93 @@ class FormHandler
     {
         $this->setRedirectURL();
 
-        switch ($_POST['form']) {
-            case 'contact':
-                $this->submitContactForm();
+        $form = isset($_POST['form']) ? $_POST['form'] : false;
 
-                break;
+        // Check nonce is valid if ($form && isset($_POST['kipling_wpnonce_name']) && wp_verify_nonce($_POST['kipling_wpnonce_name'], 'kipling_wpnonce_action')) {
+        if ($form) {
+
+            $response = [];
+            // Validate the reCaptcha
+            $validRecaptcha = $this->validateReCaptcha();
+            if (!$validRecaptcha) {
+                $response['errors'] = ['recaptcha' => 'Invalid Recaptcha'];
+            }
+
+            if (isset($response['errors'])) {
+                // deal with errors
+                $this->redirectBackWithError($response['errors']);
+            } else {
+                switch ($_POST['form']) {
+                    case 'contact':
+                        // Contact Page Form
+                        require_once('ContactFormSubmission.php');
+                        $form = new ContactFormSubmission();
+                        break;
+
+                    default:
+                        wp_safe_redirect('/');
+
+                        exit;
+                        break;
+                }
+
+                // if successful the form will redirect and not return errors
+                $response = $form->submit();
+
+                if ($response['errors']) {
+                    // deal with errors
+                    $this->redirectBackWithError($response['errors']);
+                } else {
+                    $formID = isset($_POST['id']) ? $_POST['id'] : '';
+
+                    $params = "?form={$formID}&form-status=success";
+
+                    if (!empty($response['params']['thankYouPageURL'])) {
+                        wp_safe_redirect($response['params']['thankYouPageURL']);
+
+                        exit;
+                    }
+
+                    if (!empty($response['params'])) {
+                        foreach ($response['params'] as $key => $value) {
+                            // $value = urlencode($value);
+                            $params .= "&{$key}={$value}";
+                        }
+                    }
+
+                    wp_safe_redirect($this->redirectURL . $params);
+                }
+            }
+
+            die();
+        } else {
+            // Form is not valid
+            wp_safe_redirect('/');
+            exit;
+        }
+    }
+
+    /**
+     * Validate the recaptcha in the form request.
+     *
+     * @return boolean
+     */
+    public function validateReCaptcha()
+    {
+        if (isset($_POST['g-recaptcha-response'])) {
+            $captcha = $_POST['g-recaptcha-response'];
+        } else {
+            return false;
         }
 
-        $this->redirectBackWithError();
+        $secret = get_field('google__recaptcha_secret', 'options') ?: false;
+
+        // calling google recaptcha api.
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=" . $secret . "&response=" . $captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
+
+        $res = json_decode($response);
+
+        return $res->success;
     }
 
     /**
@@ -68,30 +146,4 @@ class FormHandler
 
         exit();
     }
-
-    /**
-     * Submit a contact form.
-     *
-     * @return void
-     */
-    private function submitContactForm()
-    {
-        require_once('ContactFormSubmission.php');
-        $form = new ContactFormSubmission();
-
-        // if successful the form will redirect and not return errors
-        $errors = $form->submit();
-
-        if ($errors) {
-            $this->redirectBackWithError($errors);
-        } else {
-            $formID = isset($_POST['id']) ? $_POST['id'] : '';
-
-            wp_safe_redirect($this->redirectURL . "?form={$formID}&form-status=success");
-        }
-
-        die();
-    }
 }
-
-new FormHandler();
