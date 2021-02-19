@@ -83,7 +83,7 @@ class StarterSite extends Timber\Site
         if (is_admin()) {
             // Determines whether the current request is for an administrative interface page.
             // Admin only Functions
-            $this->adminFunctions();
+            require_once('library/admin/functions.php');
         } else {
             // Non-Admin only Functions
             require_once('library/admin/adminBar.php');
@@ -110,7 +110,7 @@ class StarterSite extends Timber\Site
     // Needed on both the front and backend
     public function criticalActions()
     {
-        add_action('init', 'prioritisePaginationToSlug');
+        // add_action('init', 'sampleFunction');
     }
 
     /** This is where you can register custom post types and taxonomies. */
@@ -139,11 +139,6 @@ class StarterSite extends Timber\Site
             'primary_menu'          => __('Main Menu', 'wdd'),
             'footer_menu'           => __('Footer Menu', 'wdd'),
         ));
-    }
-
-    public function adminFunctions()
-    {
-        require_once('library/admin/functions.php');
     }
 
     /** This is where you add some context
@@ -189,6 +184,14 @@ class StarterSite extends Timber\Site
             $phpmailer->Username = getenv('MAILTRAP_USERNAME');
             $phpmailer->Password = getenv('MAILTRAP_PASSWORD');
         }, 999);
+    }
+    public function loadCommands()
+    {
+        require_once('library/cli/ACFJSONCommand.php');
+        require_once('library/cli/getFilename.php');
+
+        WP_CLI::add_command('acf-json sync', ['WP_CLI\ACFJSONCommand', 'sync']);
+        WP_CLI::add_command('filename', 'WP_CLI\getFilename');
     }
 }
 
