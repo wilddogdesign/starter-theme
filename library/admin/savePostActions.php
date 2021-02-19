@@ -46,6 +46,20 @@ function copyContentToPostContent($post_id)
 
     $value = get_field('core_content', $post_id);
 
+    if ($value == '') {
+        $flexiContent = get_field('flexi_content', $post_id);
+        if ($flexiContent) {
+            foreach ($flexiContent as $block) {
+                $value = $block['text'] ?: $block['text_column_1'] ?: $block['text_column_2'];
+                if ($value != '') {
+                    break;
+                }
+            }
+        } else {
+            $value = get_field('core_intro', $post_id);
+        }
+    }
+
     if ($value) {
         wp_update_post([
             'ID' => $post_id,
