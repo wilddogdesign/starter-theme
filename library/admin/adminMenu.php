@@ -95,7 +95,7 @@ function addACFOptionsPages()
     ]);
 
     acf_add_options_sub_page([
-        'post_id' => 'smtp',
+        'post_id'       => 'smtp',
         'page_title'    => __('SMTP Settings'),
         'menu_title'    => __('SMTP Settings'),
         'menu_slug'     => 'smtp-settings',
@@ -110,7 +110,7 @@ function removeAdminMenuItems()
 {
     // Top Level Pages
     remove_menu_page('edit.php');  //Posts
-    remove_menu_page('tools.php');  //Tools
+    // remove_menu_page('tools.php');  //Tools
     remove_menu_page('edit-comments.php'); //Comments
     remove_menu_page('link-manager.php'); // Links
     remove_menu_page('themes.php'); // Appearance
@@ -148,6 +148,28 @@ function changeAdminMenuParent()
         '',
         2
     );
+
+    // // Redirects
+    // add_submenu_page(
+    //     'wdd-global-options',
+    //     __('Redirects', 'wdd'),
+    //     'Redirects',
+    //     'manage_options',
+    //     'tools.php?page=redirection.php',
+    //     '',
+    //     2
+    // );
+
+    // // Transients
+    // add_submenu_page(
+    //     'wdd-global-options',
+    //     __('Transients', 'wdd'),
+    //     'Transients',
+    //     'manage_options',
+    //     'tools.php?page=pw-transients-manager',
+    //     '',
+    //     3
+    // );
 }
 
 // Add Separators in Admin Menu
