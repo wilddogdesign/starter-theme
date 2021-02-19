@@ -1,3 +1,11 @@
+body#tinymce {
+  padding: 15px;
+}
+
+a {
+  color: #007dbb;
+}
+
 /* #tinymce body {
   color: #202329;
   font-family: Arial, sans-serif;
