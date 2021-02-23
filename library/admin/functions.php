@@ -5,7 +5,7 @@ require_once('updateTransients.php');
 require_once('duplicatePosts.php');
 require_once('featuredThumbnailPositioning.php');
 require_once('customWYSIWYGs.php');
-require_once('registerForms.php'); // TODO RUN ON FORM ENTRY PAGE
+require_once('setupForms.php'); // TODO RUN ON FORM ENTRY PAGE
 
 /**
  * Admin Menu
