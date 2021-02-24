@@ -3,10 +3,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once(get_template_directory() . '/library/forms/registerForms.php');
+
 // Setup Form Fields in ACF
 function setupForms()
 {
-    require_once(get_template_directory() . '/library/forms/registerForms.php');
     $fieldKey = registerACFFormFieldGroup(['contact' => 'Contact', 'newsletter' => 'Newsletter']);
 
     registerACFFormFields('contact', $fieldKey, [
@@ -26,4 +27,4 @@ function setupForms()
     ]);
 }
 
-add_action('acf/init', 'registerForms');
+add_action('acf/init', 'setupForms');
