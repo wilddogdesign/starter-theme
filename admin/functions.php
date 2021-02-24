@@ -33,14 +33,14 @@ function includeJS()
     // $script  .= 'window.apiKey = "' . API_KEY . '"; ';
     // wp_add_inline_script('js-file', $script, 'before');
 
-    wp_enqueue_script('js-file', get_template_directory_uri() . '/library/admin/admin.js', array(), '1.0.4', true);
+    wp_enqueue_script('js-file', get_template_directory_uri() . '/admin/admin.js', array(), '1.0.4', true);
 }
 
 add_action('admin_enqueue_scripts', 'includeJS');
 
 function includeCss()
 {
-    wp_enqueue_style('css-file', get_template_directory_uri() . '/library/admin/admin.css', array(), '1.0.0');
+    wp_enqueue_style('css-file', get_template_directory_uri() . '/admin/admin.css', array(), '1.0.0');
 }
 
 add_action('admin_head', 'includeCss');
@@ -74,4 +74,4 @@ function registerACFGoogleMapAPIKey($api)
 }
 // add_filter('acf/fields/google_map/api', 'registerACFGoogleMapAPIKey');
 
-require_library_dir('admin/acf-dynamic-fields'); // Dynamic ACF Fields
+require_library_dir('acf-dynamic-fields'); // Dynamic ACF Fields

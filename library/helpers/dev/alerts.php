@@ -31,4 +31,4 @@ function add_toolbar_items($admin_bar)
 /**
  * This function is normally only called on Admin pages, but we need it on the user site on staging for the flashing red warning
  */
-wp_enqueue_style('css-file', get_template_directory_uri() . '/library/admin/admin.css', array(), '1.0.0');
+wp_enqueue_style('css-file', get_template_directory_uri() . '/admin/admin.css', array(), '1.0.0');

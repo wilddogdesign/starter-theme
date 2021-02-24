@@ -83,14 +83,16 @@ class StarterSite extends Timber\Site
         if (is_admin()) {
             // Determines whether the current request is for an administrative interface page.
             // Admin only Functions
-            require_once('library/admin/functions.php');
+            require_once('admin/functions.php');
         } else {
             // Non-Admin only Functions
-            require_once('library/admin/adminBar.php');
-
             add_filter('timber/context', array($this, 'addToContext'));
             add_filter('timber/twig', array($this, 'addToTwig'));
             add_action('init', array($this, 'loadScripts'));
+
+            if (is_user_logged_in()) {
+                require_once('admin/adminBar.php');
+            }
         }
 
         // CLI scripts

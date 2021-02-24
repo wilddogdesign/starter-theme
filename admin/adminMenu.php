@@ -228,7 +228,7 @@ function customMenuOrder($menu_ord)
 // Custom Backend Footer
 function customFooter()
 {
-    _e('<img alt="logo" src="' . get_bloginfo('template_directory') . '/library/admin/wild-dog-red.png" style="height: 25px; padding: 3px 0px";/>
+    _e('<img alt="logo" src="' . get_bloginfo('template_directory') . '/admin/wild-dog-red.png" style="height: 25px; padding: 3px 0px";/>
 		</br>
 		<span id="footer-thankyou">Developed by <a href="https://wilddogdesign.co.uk/">Wild Dog Design</a></span>', 'core');
 }
