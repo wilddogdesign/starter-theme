@@ -59,11 +59,11 @@
             "maxlength": ""
         },
         {
-            "key": "field_5f05ba95cb261",
-            "label": "Address",
-            "name": "global_contact__address",
-            "type": "textarea",
-            "instructions": "Enter each address line on new line",
+            "key": "field_60194d7964634",
+            "label": "Email Address to Bcc (Hidden) when email sent to main email",
+            "name": "global_contact__email_bcc",
+            "type": "repeater",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -71,12 +71,50 @@
                 "class": "",
                 "id": ""
             },
-            "hide_admin": 0,
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "Add Email",
+            "sub_fields": [
+                {
+                    "key": "field_60194d9864635",
+                    "label": "Recipient",
+                    "name": "recipient",
+                    "type": "email",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
+                }
+            ]
+        },
+        {
+            "key": "field_5f05ba95cb261",
+            "label": "Address",
+            "name": "global_contact__address",
+            "type": "wysiwyg",
+            "instructions": "Enter each address line on new line using [shift] + [enter]",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
-            "placeholder": "",
-            "maxlength": "",
-            "rows": 4,
-            "new_lines": "br"
+            "tabs": "all",
+            "toolbar": "bold_italic_links_only",
+            "media_upload": 0,
+            "delay": 0
         },
         {
             "key": "field_5f05bb32cb266",
