@@ -3,8 +3,8 @@
 {% block content %}
 
   <div class="o-wrapper">
-    <h1>{{ offlineTitle }}</h1>
-    {{ offlineContent|wpautop }}
+    <h1>{{ post.page_title_overwrite ?: post.title }}</h1>
+    {{ post.core_content|wpautop }}
   </div>
 
 {% endblock %}
