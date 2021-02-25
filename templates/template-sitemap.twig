@@ -6,34 +6,40 @@
     <div class="o-freetext">
       <h1>{{ post.title }}</h1> {# this page has no hero, needs a <h1>, this is it #}
 
-      <div class="c-sitemap">
-        {% for sitemapList in sitemap %}
-          <div class="c-sitemap__list">
-            <h2 class="o-heading">{{ sitemapList.title }}</h2>
+      {% if sitemap %}
+        <div class="c-sitemap">
+          {% for sitemapList in sitemap %}
+            <div class="c-sitemap__list">
+              <h2 class="o-heading">{{ sitemapList.title }}</h2>
 
-            <ul>
-              {% for item in sitemapList.items %}
-                {% if item.items %}
-                  <li class="c-sitemap__grandchildren">
-                    <a href="{{ item.link }}" target="_blank" title="{{ item.title }}" rel="noopener">
-                      <h2 class="o-heading">{{ item.title }}</h2>
-                    </a>
-                      <ul>
-                        {% for child in item.items %}
-                          <li>
-                            <a href="{{ child.link }}" target="_blank" title="{{ child.title }}" rel="noopener">{{ child.title }}</a>
-                          </li>
-                        {% endfor %}
-                      </ul>
-                  </li>
-                {% else %}
-                  <li><a href="{{ item.link }}" target="_blank" title="{{ item.title }}" rel="noopener">{{ item.title }}</a></li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-        {% endfor %}
-      </div>
+              {% if sitemapList.items %}
+                <ul>
+                  {% for item in sitemapList.items %}
+                    {% if item.items %}
+                      <li class="c-sitemap__grandchildren">
+                        <a href="{{ item.link }}" target="_blank" title="{{ item.title }}" rel="noopener">
+                          <h2 class="o-heading">{{ item.title }}</h2>
+                        </a>
+                          <ul>
+                            {% for child in item.items %}
+                              <li>
+                                <a href="{{ child.link }}" target="_blank" title="{{ child.title }}" rel="noopener">{{ child.title }}</a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                      </li>
+                    {% else %}
+                      <li><a href="{{ item.link }}" target="_blank" title="{{ item.title }}" rel="noopener">{{ item.title }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>There are no items to show in the sitemap</p>
+      {% endif %}
     </div>
   </div>
 

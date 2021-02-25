@@ -201,6 +201,45 @@
             "toolbar": "bold_italic_links_only",
             "media_upload": 0,
             "delay": 1
+        },
+        {
+            "key": "field_6037b93cd76c5",
+            "label": "Sitemap Settings",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "left",
+            "endpoint": 0
+        },
+        {
+            "key": "field_6037b945d76c6",
+            "label": "Items to include in the sitemap",
+            "name": "global__sitemap_post_types",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "page": "Pages"
+            },
+            "allow_custom": 0,
+            "default_value": [],
+            "layout": "vertical",
+            "toggle": 1,
+            "return_format": "value",
+            "save_custom": 0
         }
     ],
     "location": [

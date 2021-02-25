@@ -11,9 +11,15 @@ function generateSitemap()
 {
     $sitemap = [];
 
-    // Add Pages
-    $pages = getPostIDs('page');
-    $sitemap[] = addPostTypeToSitemap('Pages', $pages);
+    $globalSitemapPostTypes = get_field('global__sitemap_post_types', 'global-options');
+    if (is_array($globalSitemapPostTypes)) {
+        foreach ($globalSitemapPostTypes as $postType) {
+            // Add PostType
+            $pages = getPostIDs($postType);
+            $postTypeTitle = ucwords(str_replace('_', ' ', $postType)) . 's';
+            $sitemap[] = addPostTypeToSitemap($postTypeTitle, $postType, $pages);
+        }
+    }
 
     return $sitemap;
 }
