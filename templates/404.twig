@@ -3,8 +3,8 @@
 {% block content %}
 
   <div class="o-wrapper">
-    <h1>{{ fourZeroFourTitle }}</h1>
-    {{ fourZeroFourContent|wpautop }}
+    <h1>{{ get_global('404_title', 'global-options') }}</h1>
+    {{ get_global('404_content', 'global-options')|wpautop }}
     </div>
   </div>
 
