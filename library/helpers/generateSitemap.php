@@ -17,7 +17,7 @@ function generateSitemap()
             // Add PostType
             $pages = getPostIDs($postType);
             $postTypeTitle = ucwords(str_replace('_', ' ', $postType)) . 's';
-            $sitemap[] = addPostTypeToSitemap($postTypeTitle, $postType, $pages);
+            $sitemap[] = addPostTypeToSitemap($postTypeTitle, $pages);
         }
     }
 
