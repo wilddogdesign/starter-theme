@@ -1,5 +1,7 @@
 <?php
 
+require_once(get_template_directory() . '/library/helpers/getPostIDs.php');
+
 /**
  * Delete related transient on save/edit/delete post and regenerate
  *
@@ -11,9 +13,9 @@ function deleteTransient($post_id)
     $postType = get_post_type($post_id);
 
     switch ($postType) {
-        case 'sample':
-            delete_transient('sample-transient-name');
-            // Reset transient function here
+        case 'page':
+            delete_transient('page-ids');
+            getPostIDs('page'); // Reset transient function here
             break;
 
         default:
