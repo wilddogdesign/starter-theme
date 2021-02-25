@@ -106,7 +106,9 @@ class StarterSite extends Timber\Site
     // Needed on both the front and backend
     public function criticalFiles()
     {
-        require_once('library/prioritisePaginationToSlug.php');
+        // Include Critical Helpers - helpers that are needed on a majority of pages
+        // require_once('library/yoast/setup.php'); // Needed for SEO and Sitemap
+        // require_once('library/prioritisePaginationToSlug.php');
     }
 
     // Needed on both the front and backend
@@ -178,14 +180,14 @@ class StarterSite extends Timber\Site
         require_once('library/helpers/dev/jd.php');
 
         // Use https://mailtrap.io/ for email testing
-        add_action('phpmailer_init', function ($phpmailer) {
-            $phpmailer->isSMTP();
-            $phpmailer->Host     = 'smtp.mailtrap.io';
-            $phpmailer->SMTPAuth = true;
-            $phpmailer->Port     = 2525;
-            $phpmailer->Username = getenv('MAILTRAP_USERNAME');
-            $phpmailer->Password = getenv('MAILTRAP_PASSWORD');
-        }, 999);
+        // add_action('phpmailer_init', function ($phpmailer) {
+        //     $phpmailer->isSMTP();
+        //     $phpmailer->Host     = 'smtp.mailtrap.io';
+        //     $phpmailer->SMTPAuth = true;
+        //     $phpmailer->Port     = 2525;
+        //     $phpmailer->Username = getenv('MAILTRAP_USERNAME');
+        //     $phpmailer->Password = getenv('MAILTRAP_PASSWORD');
+        // }, 999);
     }
     public function loadCommands()
     {
