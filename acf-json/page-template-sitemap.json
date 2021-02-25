@@ -1,0 +1,25 @@
+{
+    "key": "page-template-sitemap",
+    "title": "Page Template Sitemap",
+    "fields": [],
+    "location": [
+        [
+            {
+                "param": "page_template",
+                "operator": "==",
+                "value": "template-sitemap.php"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content"
+    ],
+    "active": true,
+    "description": "Only used when cloned",
+    "modified": 1614181819
+}
