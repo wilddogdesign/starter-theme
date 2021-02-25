@@ -24,7 +24,7 @@ function copyHeroImageToThumbnail($post_id)
 
     $currentThumbnail = get_the_post_thumbnail($post_id);
     if ($currentThumbnail == false) {
-        $imageID = get_field('hero__image', $post_id)['id'];
+        $imageID = get_field('hero__image', $post_id)['id'] ?: get_field('default_featured_image', 'global-defaults')['id'];
         if ($imageID) {
             wp_update_post([
                 'ID' => $post_id,
