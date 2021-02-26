@@ -72,7 +72,7 @@ function customEditorStyles()
     }
 
     // Custom Styles for WYSIWYG Only
-    add_editor_style('admin/customEditorStyles.css');
+    add_editor_style('admin/assets/customEditorStyles.css');
 }
 
 function removeQuicktags($qtInit, $editor_id = 'content')

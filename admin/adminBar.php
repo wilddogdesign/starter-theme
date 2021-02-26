@@ -23,7 +23,7 @@ function customDashboardLogo($wp_admin_bar)
     $wp_admin_bar->add_node(
         array(
             'id'    => 'alt-site-name',
-            'title' => '<img alt="logo" src="' . get_bloginfo('template_directory') . '/admin/logo.svg" style="height: 22px;margin: 3px 5px;float: left;"/>' . $title,
+            'title' => '<img alt="logo" src="' . get_bloginfo('template_directory') . '/admin/assets/logo.svg" style="height: 22px;margin: 3px 5px;float: left;"/>' . $title,
             'href'  => (is_admin() || !current_user_can('read')) ? home_url('/') : admin_url(),
         )
     );
