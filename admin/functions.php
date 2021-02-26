@@ -5,6 +5,7 @@ require_once('updateTransients.php');
 require_once('duplicatePosts.php');
 require_once('featuredThumbnailPositioning.php');
 require_once('customWYSIWYGs.php');
+require_once('disableComments.php');
 require_once('setupForms.php'); // TODO RUN ON FORM ENTRY PAGE
 
 /**
@@ -44,23 +45,6 @@ function includeCss()
 }
 
 add_action('admin_head', 'includeCss');
-
-/**
- * Admin pages hooks
- */
-
-// Remove all support for comments & trackbacks from all post types
-function disableCommentsPostTypesSupport()
-{
-    $post_types = get_post_types();
-    foreach ($post_types as $post_type) {
-        if (post_type_supports($post_type, 'comments')) {
-            remove_post_type_support($post_type, 'comments');
-            remove_post_type_support($post_type, 'trackbacks');
-        }
-    }
-}
-add_action('admin_init', 'disableCommentsPostTypesSupport');
 
 /**
  * ACF Hooks
