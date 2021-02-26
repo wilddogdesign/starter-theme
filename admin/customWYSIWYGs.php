@@ -67,6 +67,9 @@ function customStyleSheetDropdownOptions($toolbars)
     // Insert the array, JSON ENCODED, into 'style_formats'
     $toolbars['style_formats'] = json_encode($style_formats);
 
+    // unset the preview styles - show without styling instead
+    unset($toolbars['preview_styles']);
+
     return $toolbars;
 }
 
