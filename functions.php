@@ -4,11 +4,11 @@
  * Load all php files in a given directory
  * @param  string $path
  */
-function require_library_dir($path)
+function require_dir($path)
 {
     array_map(function ($file) {
         require_once($file);
-    }, glob(__DIR__ . "/library/{$path}/*.php"));
+    }, glob(__DIR__ . "/{$path}/*.php"));
 }
 
 /**
@@ -120,8 +120,8 @@ class StarterSite extends Timber\Site
     /** This is where you can register custom post types and taxonomies. */
     public function criticalLibraries()
     {
-        require_library_dir('post-types');
-        require_library_dir('taxonomies');
+        require_dir('library/post-types');
+        require_dir('library/taxonomies');
     }
 
     // Needed on both the front and backend

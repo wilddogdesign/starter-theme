@@ -74,4 +74,4 @@ function registerACFGoogleMapAPIKey($api)
 }
 // add_filter('acf/fields/google_map/api', 'registerACFGoogleMapAPIKey');
 
-require_library_dir('acf-dynamic-fields'); // Dynamic ACF Fields
+require_dir('../acf-dynamic-fields'); // Dynamic ACF Fields
