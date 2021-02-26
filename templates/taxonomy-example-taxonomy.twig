@@ -4,8 +4,8 @@
 
   <div class="o-wrapper">
     <div class="o-freetext">
-      <h1>{{post.name}}</h1>
-      {{post.description|wpautop}}
+      <h1>{{ post.name }}</h1>
+      {{ post.description|wpautop|enableShortcodes }}
     </div>
   </div>
 

@@ -4,7 +4,7 @@
 
   <div class="o-wrapper">
     <h1>{{ post.page_title_overwrite ?: post.title }}</h1>
-    {{ post.core_content|wpautop }}
+    {{ post.core_content|wpautop|enableShortcodes }}
   </div>
 
 {% endblock %}

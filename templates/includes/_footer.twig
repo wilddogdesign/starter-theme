@@ -1,6 +1,27 @@
 {# I'm here so you can see the front-end working, replace with actual project front-end #}
 <footer role="contentinfo" class="c-footer">
 	<div class="o-wrapper">
-		<small>&copy; <a href="https://wilddogdesign.co.uk">Wild Dog Design</a></small>
+    {% for item in footerMenu.get_items %}
+      <a
+        href="{{item.link}}"
+        class="
+          c-footer__link
+          {% if item.current %} c-footer__link--active{% endif %}"
+        title="{{item.title}}"
+      >
+        {{item.title}}
+      </a>
+    {% endfor %}
+
+		<small>
+      &copy; <a
+        href="https://wilddogdesign.co.uk"
+        title="Wild Dog Design"
+        target="_blank"
+        rel="noopener"
+      >
+        wilddogdesign.co.uk
+      </a>
+    </small>
 	</div>
 </footer>

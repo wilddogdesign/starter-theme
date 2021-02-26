@@ -4,9 +4,19 @@
   method="post"
   class="js-recaptcha"
 >
-  <input name="form" type="hidden" value="contact" />
-  <input name="id" type="hidden" value="contact-form" />
-  <input name="wdd_contact_form_submission" type="hidden" />
+  <label class="u-a11y" for="form-basics-form">form-basics-form</label> {# Added for SEO Purposes #}
+  <input id="form-basics-form" name="form" type="hidden" value="contact" />
+
+  <label class="u-a11y" for="form-basics-id">form-basics-id</label> {# Added for SEO Purposes #}
+  <input id="form-basics-id" name="id" type="hidden" value="contact-form" />
+
+  <label class="u-a11y" for="form-basics-submission">form-basics-submission</label> {# Added for SEO Purposes #}
+  <input id="form-basics-submission" name="kipling_submission" type="hidden" />
+
+  {% for utm in ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'gclsrc', 'dclid', 'fbclid'] %}
+    <label class="u-a11y" for="{{utm}}">{{utm}}</label> {# Added for SEO Purposes #}
+    <input type="hidden" id="{{utm}}" name="{{utm}}" data-utm="{{utm}}" />
+  {% endfor %}
 
   {# Form Fields  #}
 

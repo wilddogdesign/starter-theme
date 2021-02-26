@@ -69,6 +69,12 @@ $twig->addFilter(new Twig_SimpleFilter('nl2br', function ($string) {
     return preg_replace("/\r|\n/", "", nl2br($string));
 }));
 
+$twig->addFilter(new Twig_SimpleFilter('enableShortcodes', function ($string) {
+    // Pass the content in do_shortcode() will process all the shortcodes in it.
+    // Lets say $data contains custom field data including shortcodes
+    return do_shortcode($string); // will contain processed shortcodes
+}));
+
 /**
  * Convert video URL to embed src
  */

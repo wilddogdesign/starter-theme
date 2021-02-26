@@ -1,14 +1,20 @@
 {# I'm here so you can see the front-end working, replace with actual project front-end #}
 <header role="banner" id="top" class="c-header">
 	<div class="o-wrapper">
-		<a href="/" class="c-header__brand">{{ site.name }}</a>
+		<a href="/" class="c-header__brand" title="{{ site.name }}">{{ site.name }}</a>
 
     <nav class="c-header__nav">
-      <a href="#" class="c-header__nav__item">Something</a>
-      <a href="#" class="c-header__nav__item">A thing</a>
-      <a href="#" class="c-header__nav__item">Services</a>
-      <a href="#" class="c-header__nav__item">About</a>
-      <a href="#" class="c-header__nav__item">Contact</a>
+      {% for item in mainMenu.get_items %}
+        <a
+          href="{{ item.link }}"
+          class="
+            c-header__nav__item
+            {% if item.current %} c-header__nav__item--active{% endif %}"
+          title="{{ item.title }}"
+        >
+          {{ item.title }}
+        </a>
+      {% endfor %}
     </nav>
 
     <button
