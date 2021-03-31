@@ -1,0 +1,45 @@
+{% if pagination.pages %}
+  <div class="o-wrapper">
+    <div class="c-pagination">
+
+      {% if pagination.prev %}
+        <a
+          href="{{pagination.prev.link}}"
+          title="Previous"
+          class="c-pagination__previous"
+        >
+          Previous
+        </a>
+      {% endif %}
+
+      <ul class="c-pagination__list">
+        {% for page in pagination.pages %}
+          {% if page.link %}
+            <li class="c-pagination__item">
+              <a class="c-pagination__link" href="{{ page.link }}" title="page {{ page.title }}">{{ page.title }}</a>
+            </li>
+          {% else %}
+            <li class="c-pagination__item c-pagination__item--active">
+              <span class="c-pagination__link">{{ page.title }}</span>
+            </li>
+          {% endif %}
+
+          {% if loop.last == false %}
+            <li class="c-pagination__break">/</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+
+      {% if pagination.next %}
+        <a
+          href="{{pagination.next.link}}"
+          title="Next"
+          class="c-pagination__next"
+        >
+          Next
+        </a>
+      {% endif %}
+
+    </div>
+  </div>
+{% endif %}
