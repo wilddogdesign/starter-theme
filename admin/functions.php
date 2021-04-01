@@ -19,6 +19,9 @@ require_once('adminBar.php');
  */
 require_once('pages/index.php');
 
+// Must come after adminMenu registers Options Pages
+// require_once('convertACFphp2json.php');
+
 /**
  * Admin JS and CSS
  */
