@@ -6,7 +6,6 @@ require_once('duplicatePosts.php');
 require_once('featuredThumbnailPositioning.php');
 require_once('customWYSIWYGs.php');
 require_once('disableComments.php');
-require_once('setupForms.php'); // TODO RUN ON FORM ENTRY PAGE
 
 /**
  * Admin Menu
@@ -20,7 +19,7 @@ require_once('adminBar.php');
 require_once('pages/index.php');
 
 // Must come after adminMenu registers Options Pages
-// require_once('convertACFphp2json.php');
+require_once('convertACFphp2json.php');
 
 /**
  * Admin JS and CSS
@@ -62,3 +61,4 @@ function registerACFGoogleMapAPIKey($api)
 // add_filter('acf/fields/google_map/api', 'registerACFGoogleMapAPIKey');
 
 require_dir('acf-dynamic-fields'); // Dynamic ACF Fields
+require_dir('acf-dynamic-fieldgroups'); // Dynamic ACF Fields
