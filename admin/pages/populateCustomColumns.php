@@ -35,7 +35,7 @@ function populateCustomColumns($column_name, $id)
             break;
         case 'formSubmissionDate':
             // Date column
-            echo get_post_meta($id, 'entry_submission_date')[0];
+            echo get_post_meta($id, 'submission_date')[0];
             break;
         case 'formField_contact_name':
             // First Name column
