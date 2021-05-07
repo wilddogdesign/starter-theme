@@ -238,7 +238,7 @@
             "default_value": [],
             "layout": "vertical",
             "toggle": 1,
-            "return_format": "value",
+            "return_format": "array",
             "save_custom": 0
         }
     ],
@@ -256,10 +256,8 @@
     "style": "default",
     "label_placement": "top",
     "instruction_placement": "label",
-    "hide_on_screen": [
-        "the_content"
-    ],
+    "hide_on_screen": ["the_content"],
     "active": 1,
     "description": "",
-    "modified": 1598366529
+    "modified": 1620390914
 }

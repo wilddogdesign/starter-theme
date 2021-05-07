@@ -11,13 +11,18 @@ function generateSitemap()
 {
     $sitemap = [];
 
-    $globalSitemapPostTypes = get_field('global__sitemap_post_types', 'global-options');
+    $globalSitemapPostTypes = get_field('global__sitemap_post_types', 'options');
     if (is_array($globalSitemapPostTypes)) {
         foreach ($globalSitemapPostTypes as $postType) {
             // Add PostType
-            $pages = getPostIDs($postType);
-            $postTypeTitle = ucwords(str_replace('_', ' ', $postType)) . 's';
-            $sitemap[] = addPostTypeToSitemap($postTypeTitle, $pages);
+            if (is_array($postType)) {
+                $pages = getPostIDs($postType['value']);
+                $sitemap[] = addPostTypeToSitemap($postType['label'], $pages);
+            } else {
+                $pages = getPostIDs($postType);
+                $postTypeTitle = ucwords(str_replace('_', ' ', $postType)) . 's';
+                $sitemap[] = addPostTypeToSitemap($postTypeTitle, $pages);
+            }
         }
     }
 
