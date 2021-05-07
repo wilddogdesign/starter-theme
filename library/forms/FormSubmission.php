@@ -4,6 +4,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once(get_template_directory() . '/library/helpers/getUTMs.php');
+require_once(get_template_directory() . '/library/helpers/isJSON.php');
+
 class FormSubmission
 {
     /**
@@ -39,6 +42,25 @@ class FormSubmission
     ];
 
     /**
+     * Setup the utms of the form fields.
+     *
+     * @return boolean
+     */
+    public function setUTMFields()
+    {
+        $utms = getUTMs();
+
+        if ($utms) {
+            foreach ($utms as $utm) {
+                $this->fields[$utm] = [
+                    'validate' => 'none',
+                    'value' => ''
+                ];
+            }
+        }
+    }
+
+    /**
      * Set the values of the accepted form fields from the post data.
      *
      * @return void
@@ -46,10 +68,22 @@ class FormSubmission
     public function setFieldValues()
     {
         foreach ($this->fields as $fieldName => $fieldInfo) {
-            // Example: 'title' => ['validate' => 'name', 'value' => '']
-            $value = isset($_POST[$fieldName]) ? $_POST[$fieldName] : '';
-            if ($value) {
-                $this->fields[$fieldName]['value'] = trim($value);
+            // if a repeated field: example: 'route' => ['items' => ['leg_0' => ['name' => ['validate' => '', 'value' => '']]]]
+            if (isset($fieldInfo['items'])) {
+                foreach ($fieldInfo['items'] as $legKey => $legInfo) {
+                    foreach ($legInfo as $itemKey => $itemInfo) {
+                        $value = isset($_POST[$itemKey]) ? $_POST[$itemKey] : '';
+                        if ($value) {
+                            $this->fields[$fieldName]['items'][$legKey][$itemKey]['value'] = trim($value);
+                        }
+                    }
+                }
+            } else {
+                // Example: 'title' => ['validate' => 'name', 'value' => '']
+                $value = isset($_POST[$fieldName]) ? $_POST[$fieldName] : '';
+                if ($value) {
+                    $this->fields[$fieldName]['value'] = trim($value);
+                }
             }
         }
     }
@@ -63,7 +97,23 @@ class FormSubmission
     {
         $errors = [];
 
+        // Create array of fields to validate (only needed becasue of repeater fields)
+        $fieldsToValidate = [];
         foreach ($this->fields as $fieldName => $fieldInfo) {
+            // Example: 'title' => ['validate' => 'name', 'value' => '']
+            // if a repeated field: example: 'route' => ['items' => ['leg_0' => ['name' => ['validate' => '', 'value' => '']]]]
+            if (isset($fieldInfo['items'])) {
+                foreach ($fieldInfo['items'] as $item) {
+                    foreach ($item as $itemKey => $itemInfo) {
+                        $fieldsToValidate[$itemKey] = $itemInfo;
+                    }
+                }
+            } else {
+                $fieldsToValidate[$fieldName] = $fieldInfo;
+            }
+        }
+
+        foreach ($fieldsToValidate as $fieldName => $fieldInfo) {
             // Example: 'title' => ['validate' => 'name', 'value' => '']
             $value = $fieldInfo['value'];
             switch ($fieldInfo['validate']) {
@@ -96,6 +146,21 @@ class FormSubmission
                         $errors[$fieldName] = 'This must be true';
                     }
                     break;
+
+                    // case 'date':
+                    //     $dateArray = explode('-', $value);
+                    //     if (!checkdate($dateArray[1], $dateArray[0], $dateArray[2])) {
+                    //         $errors[$fieldName] = 'Invalid date';
+                    //     }
+                    //     break;
+
+                    // case 'time':
+                    //     // 24hr time format HH:MM
+                    //     $timeFormat = '/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/';
+                    //     if (strlen($value) < 4 || !preg_match($timeFormat, $value)) {
+                    //         $errors[$fieldName] = 'Please enter a valid time';
+                    //     }
+                    //     break;
 
                 case 'none':
                     break;
@@ -139,8 +204,35 @@ class FormSubmission
             add_post_meta($post_id, 'submission_date', date('d/m/Y'));
 
             foreach ($this->fields as $fieldName => $fieldInfo) {
-                // Example: 'title' => ['validate' => 'name', 'value' => '']
-                add_post_meta($post_id, $formType . '_form_field__' . $fieldName, $fieldInfo['value']);
+                // if a repeated field: example: 'route' => ['items' => ['item_0' => ['name' => ['validate' => '', 'value' => '']]]]
+                if (isset($fieldInfo['items'])) {
+                    $repeaterData = []; // each element of this array is a row in the repeater ($itemData)
+
+                    foreach ($fieldInfo['items'] as $item) {
+                        // Example ['item_0' => ['name' => ['validate' => '', 'value' => '']]]]
+                        $itemData = []; // each element of this row is a field key => value pair
+                        foreach ($item as $subFieldName => $subFieldInfo) {
+                            // Example ['name' => ['validate' => '', 'value' => '']]]
+                            $strippedSubFieldName = explode('-', $subFieldName);
+                            // Note: You MUST use field keys here
+                            // Example: field_cargo_form_field__route_subfield__departure
+                            $subFieldKey = 'field_' . $formType . '_form_field__' . $fieldName . '_subfield__' . substr($strippedSubFieldName[1], 2);
+                            // Add the subfield name and value to the item details
+                            $itemData[$subFieldKey] = $subFieldInfo['value'];
+                        }
+
+                        // Add the item data to the repeater data
+                        $repeaterData[] = $itemData;
+                    }
+
+                    // Note: You MUST use field keys here
+                    $repeaterKey = 'field_' . $formType . '_form_field__' . $fieldName; // Example field_cargo_form_field__route
+                    update_field($repeaterKey, $repeaterData, $post_id);
+                } else {
+                    // Example: 'title' => ['validate' => 'name', 'value' => '']
+                    $fieldValue = $fieldInfo['value'];
+                    add_post_meta($post_id, $formType . '_form_field__' . $fieldName, $fieldValue);
+                }
             }
         }
     }
@@ -150,24 +242,100 @@ class FormSubmission
      *
      * @return void
      */
-    public function sendNotificationMail($emailNotifications, $subject, $fromName, $fromEmail, $replyToEmail = '')
+    public function sendNotificationMail($notificationStatus, $fromName, $fromEmail, $replyToEmail = '', $emailNotifications, $subject = '', $content = '')
     {
+        // Check essential variables are set
+        if ($notificationStatus == false || $emailNotifications == false || $replyToEmail == '') {
+            return;
+        }
+
         if ($emailNotifications) {
+            $f = $this->fields;
+
+            // Make sure a subject is set
+            $subject = $subject ?: 'New Form Submission';
+
             $message = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
             $message .= "<html xmlns=\"http://www.w3.org/1999/xhtml\">";
             $message .= "<head>";
             $message .= "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />";
             $message .= "<title>" . $subject . "</title>";
             $message .= "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>";
+            $message .= "<style>
+                            h1, h2, h3, h4, h5, h6 {
+                                margin: 0 0 .7em;
+                                font-family: Arial, sans-serif;
+                                font-weight: 700;
+                            }
+                            html, body {
+                                min-width: 320px;
+                                margin: 10px;
+                                color: #414042;
+                                font-family: Arial, sans-serif;
+                            }
+                            table {
+                                font-family: arial, sans-serif;
+                                border-collapse: collapse;
+                                width: 100%;
+                            }
+                            td, th {
+                                border: 1px solid #dddddd;
+                                text-align: left;
+                                padding: 8px;
+                            }
+                            tr:nth-child(even) {
+                                background-color: #dddddd;
+                            }
+                        </style>";
             $message .= "</head><body>";
 
-            foreach ($this->fields as $fieldName => $fieldInfo) {
-                // Example: 'title' => ['validate' => 'name', 'value' => '']
-                $message .= $this->formatFieldLabel($this->formatFieldName($fieldName)) . $this->formatFieldText($fieldInfo['value']);
+            if ($content) {
+                $message .= wpautop($this->formatDynamicContent($content));
+            } else {
+                $message .= "<h2>Submitted Data</h2>";
+                $message .= $this->formatFieldLabel('Submission Date') . $this->formatFieldText(date("d/m/Y")); // Add Submission Date
+
+                foreach ($this->fields as $fieldName => $fieldInfo) {
+                    // Example: 'title' => ['validate' => 'name', 'value' => '']
+                    // if a repeated field: example: 'shipments' => ['items' => ['item_0' => ['name' => ['validate' => '', 'value' => '']]]]
+                    if (isset($fieldInfo['items'])) {
+                        $message .= $this->formatFieldLabel($this->formatFieldName($fieldName)); // Add <h4>Shipments</h4>
+                        $message .= "<table>";
+                        $message .= "<tr>";
+
+                        // Set the table headers
+                        foreach ($fieldInfo['items'] as $itemKey => $itemInfo) {
+                            if ($itemKey === array_key_first($fieldInfo['items'])) {
+                                foreach ($itemInfo as $itemFieldName => $itemFieldInfo) {
+                                    $strippedSubFieldName = explode('-', $itemFieldName);
+                                    $message .= "<th>" . $this->formatFieldName(substr($strippedSubFieldName[1], 2)) . "</th>";
+                                }
+                            }
+                        }
+
+                        $message .= "</tr>";
+
+                        // Set the table content
+                        foreach ($fieldInfo['items'] as $itemInfo) {
+                            $message .= "<tr>";
+                            foreach ($itemInfo as $itemFieldName => $itemFieldInfo) {
+                                if ($itemFieldInfo['value']) {
+                                    // Dont print blank fields or programatic or json fields
+                                    $message .= "<td>" . $this->formatFieldText($itemFieldInfo['value']) . "</td>";
+                                }
+                            }
+                            $message .= "</tr>";
+                        }
+
+                        $message .= "</table>";
+                    } elseif ($fieldInfo['value']) { // Dont print blank fields or programatic or json fields
+                        // Example: 'title' => ['validate' => 'name', 'value' => '']
+                        $message .= $this->formatFieldLabel($this->formatFieldName($fieldName)) . $this->formatFieldText($fieldInfo['value']);
+                    }
+                }
             }
 
             $message .= "</body></html>";
-
             $headers = [
                 'From: ' . $fromName . ' <' . $fromEmail . '>',
                 'Reply-To: ' . $replyToEmail,
@@ -175,8 +343,9 @@ class FormSubmission
             ];
 
             foreach ($emailNotifications as $notification) {
-                if ($notification['receiving_email_address']) {
-                    wp_mail($notification['receiving_email_address'], $subject, $message, $headers);
+                $emailAddress = $notification['receiving_email_address'];
+                if ($emailAddress) {
+                    wp_mail($emailAddress, $subject, $message, $headers);
                 }
             }
         }
@@ -214,19 +383,31 @@ class FormSubmission
         $message .= "<style>
                         h1, h2, h3, h4, h5, h6 {
                             margin: 0 0 .7em;
-                            font-family: 'Neuzeit Grotesk', Arial, sans-serif;
-                            line-height: 1.1;
+                            font-family: Arial, sans-serif;
+                            font-weight: 700;
                         }
                         html, body {
                             min-width: 320px;
                             margin: 10px;
-                            color: #454545;
-                            font-family: 'Neuzeit Grotesk', Arial, sans-serif;
-                            line-height: 1.3;
+                            color: #414042;
+                            font-family: Arial, sans-serif;
+                        }
+                        table {
+                            font-family: arial, sans-serif;
+                            border-collapse: collapse;
+                            width: 100%;
+                        }
+                        td, th {
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                        }
+                        tr:nth-child(even) {
+                            background-color: #dddddd;
                         }
                     </style>";
         $message .= "</head><body>";
-        $message .= wpautop($content);
+        $message .= wpautop($this->formatDynamicContent($content));
         $message .= "</body></html>";
 
         $from = $fromEmail ? 'From: ' . $fromName . ' <' . $fromEmail . '>' : '';
@@ -237,6 +418,22 @@ class FormSubmission
         ];
 
         wp_mail($recipient, $subject, $message, $headers);
+    }
+
+    /**
+     * Get the thank you page URL
+     *
+     * @return boolean
+     */
+    public function getThankYouPage($fieldname)
+    {
+        $globalThankYouPage = get_field($fieldname, 'options');
+
+        if (is_object($globalThankYouPage)) {
+            return get_permalink($globalThankYouPage->ID);
+        } else {
+            return $globalThankYouPage ? get_permalink($globalThankYouPage) : false;
+        }
     }
 
     /**
@@ -255,21 +452,6 @@ class FormSubmission
         }
 
         return apply_filters('wpml_permalink', $globalThankYouPageURL, $lang);
-    }
-    /**
-     * Get the thank you page URL
-     *
-     * @return boolean
-     */
-    public function getThankYouPage($fieldname)
-    {
-        $globalThankYouPage = get_field($fieldname, 'options');
-
-        if (is_object($globalThankYouPage)) {
-            return get_permalink($globalThankYouPage->ID);
-        } else {
-            return $globalThankYouPage ? get_permalink($globalThankYouPage) : false;
-        }
     }
 
     /**
@@ -315,5 +497,60 @@ class FormSubmission
     {
         $bad = array("content-type", "bcc:", "to:", "cc:", "href");
         return str_replace($bad, "", $string);
+    }
+
+    /**
+     * Format the given string and replace {fieldname} with values.
+     *
+     * @param string $text
+     * @return string
+     */
+    public function formatDynamicContent($text = '')
+    {
+        $fields = $this->fields;
+        if ($fields) {
+            foreach ($this->fields as $fieldName => $fieldInfo) {
+                // Example: 'title' => ['validate' => 'name', 'value' => '']
+                // if a repeated field: example: 'route' => ['items' => ['leg' => ['name' => ['validate' => '', 'value' => '']]]]
+                if (isset($fieldInfo['items'])) {
+                    // Create the table incase its referenced
+                    $table = "<table>";
+                    $table .= "<tr>";
+                    // Set the table headers
+                    foreach ($fieldInfo['items'] as $legID => $legInfo) {
+                        if ($legID === array_key_first($fieldInfo['items'])) {
+                            foreach ($legInfo as $itemName => $itemInfo) {
+                                $strippedSubFieldName = explode('-', $itemName);
+                                $table .= "<th>" . $this->formatFieldName(substr($strippedSubFieldName[1], 2)) . "</th>";
+                            }
+                        }
+                    }
+                    $table .= "</tr>";
+                    // Set the table content
+                    foreach ($fieldInfo['items'] as $legInfo) {
+                        $table .= "<tr>";
+                        foreach ($legInfo as $itemKey => $itemInfo) {
+                            if ($itemInfo['value']) {
+                                // Dont print blank fields or programatic or json fields
+                                $table .= "<td>" . $this->formatFieldText($itemInfo['value']) . "</td>";
+                            }
+                        }
+                        $table .= "</tr>";
+                    }
+                    $table .= "</table>";
+                    // replace references to the table if needed
+                    $text = str_replace("{" . $fieldName . "}", $table, $text);
+                } elseif ($fieldInfo['value']) {
+                    // Example: 'title' => ['validate' => 'name', 'value' => '']
+                    $text = str_replace("{" . $fieldName . "}", $this->formatFieldText($fieldInfo['value']), $text);
+                } else {
+                    // If no value, dont show!
+                    // Example: 'title' => ['validate' => 'name', 'value' => '']
+                    $text = str_replace("{" . $fieldName . "}", '', $text);
+                }
+            }
+        }
+
+        return $text;
     }
 }
