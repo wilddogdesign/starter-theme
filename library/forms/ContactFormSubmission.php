@@ -64,16 +64,14 @@ class ContactFormSubmission extends FormSubmission
 
         $this->saveEntry('Contact Form Entry', 'contact');
 
-        $sendNotificationEmail = get_field('contact_form__email_notifications_status', 'options');
-        if ($sendNotificationEmail) {
-            $this->sendNotificationMail(
-                get_field('contact_form__email_notifications', 'options'),
-                'New Contact Form Submission',
-                get_field('global_forms_from_name', 'options'),
-                get_field('global_forms_from_email', 'options'),
-                $this->fields['email']['value']
-            );
-        }
+        $this->sendNotificationMail(
+            get_field('contact_form__email_notifications_status', 'options'),
+            get_field('global_forms_from_name', 'options'),
+            get_field('global_forms_from_email', 'options'),
+            $this->fields['email']['value'],
+            get_field('contact_form__email_notifications', 'options'),
+            'New Contact Form Submission'
+        );
 
         $this->sendClientEmail(
             get_field('contact_form__client_email_notifications_status', 'options'),
@@ -84,8 +82,7 @@ class ContactFormSubmission extends FormSubmission
             get_field('contact_form__client_email_content', 'options')
         );
 
-        $globalThankYouPage = get_field('contact_form__thank_you_page', 'options');
-        $globalThankYouPageURL = $globalThankYouPage ? get_permalink($globalThankYouPage->ID) : false;
+        $globalThankYouPageURL = $this->getThankYouPage('contact_form__thank_you_page');
 
         return [
             'errors' => false,
