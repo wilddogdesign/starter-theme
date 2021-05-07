@@ -240,6 +240,39 @@ class FormSubmission
     }
 
     /**
+     * Get the thank you page URL for the correct language
+     *
+     * @return boolean
+     */
+    public function getWPMLThankYouPage($lang, $fieldname)
+    {
+        $globalThankYouPage = get_field($lang . '_' . $fieldname, 'options');
+
+        if (is_object($globalThankYouPage)) {
+            $globalThankYouPageURL = get_permalink($globalThankYouPage->ID);
+        } else {
+            $globalThankYouPageURL = $globalThankYouPage ? get_permalink($globalThankYouPage) : false;
+        }
+
+        return apply_filters('wpml_permalink', $globalThankYouPageURL, $lang);
+    }
+    /**
+     * Get the thank you page URL
+     *
+     * @return boolean
+     */
+    public function getThankYouPage($fieldname)
+    {
+        $globalThankYouPage = get_field($fieldname, 'options');
+
+        if (is_object($globalThankYouPage)) {
+            return get_permalink($globalThankYouPage->ID);
+        } else {
+            return $globalThankYouPage ? get_permalink($globalThankYouPage) : false;
+        }
+    }
+
+    /**
      * Format the given field name as a smart title.
      *
      * @param string $label
