@@ -11,7 +11,7 @@ function getArrayIdsFromRelationshipField($relationshipField)
     $arrayIDs = [];
     if ($relationshipField) {
         foreach ($relationshipField as $post) {
-            if (is_array($post)) {
+            if (is_object($post)) {
                 $arrayIDs[] = $post->ID;
             } else {
                 $arrayIDs[] = $post;
