@@ -16,18 +16,18 @@ if ($globalUTMs) {
 
 // Setup Form Fields in ACF
 $forms = [
-    'contact' => array_merge($utms, [
+    'contact' => array_merge([
         'name' => '',
         'company' => '',
         'email' => '',
         'telephone' => '',
         'details' => ''
-    ]),
-    'enquiry' => array_merge($utms, [
+    ], $utms),
+    'enquiry' => array_merge([
         'name' => '',
         'company' => '',
         'email' => '',
         'telephone' => '',
         'details' => ''
-    ])
+    ], $utms)
 ];

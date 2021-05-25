@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
  * MENUS
  */
 $context['mainMenu'] = new TimberMenu('primary_menu');
-$context['footerMenu'] = new TimberMenu('footer_menu');;
+$context['footerMenu'] = new TimberMenu('footer_menu');
 
 /**
  * SITE VARIABLES
