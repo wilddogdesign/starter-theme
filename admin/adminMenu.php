@@ -133,6 +133,15 @@ function addAdminMenuItems()
     //     'customAdminPageContent',
     //     'dashicons-clipboard'
     // );
+
+    add_submenu_page(
+        'edit.php?post_type=form_entry',
+        'Download Form Entries',
+        'Download Form Entries',
+        'manage_options',
+        'forms-download',
+        'FormsDownloadHtml',
+    );
 }
 
 function changeAdminMenuParent()
