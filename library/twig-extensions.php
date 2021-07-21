@@ -11,6 +11,11 @@ if (!defined('ABSPATH')) {
 $twig->addExtension(new Twig\Extension\StringLoaderExtension());
 
 // Use this function in twig to get option field values, so that all options don't have to be loaded into context.
+$twig->addFunction(new \Twig\TwigFunction('get_global', function ($field, $globalID) {
+    return get_field($field, $globalID);
+}));
+
+// Use this function in twig to get option field values, so that all options don't have to be loaded into context.
 $twig->addFunction(new \Twig\TwigFunction('get_option', function ($field, $format_value = true) {
     return get_field($field, 'options', $format_value);
 }));
@@ -25,6 +30,15 @@ $twig->addFunction(new \Twig\TwigFunction('get_title', function ($post) {
     return get_the_title($post);
 }));
 
+// Use this function in twig to get the title of a post or post_id, so that it doesnt need a whole instance of TimberPost.
+$twig->addFunction(new \Twig\TwigFunction('get_field', function ($field, $post) {
+    return get_field($field, $post);
+}));
+
+// Use this function in twig to get the link of a post or post_id, so that it doesnt need a whole instance of TimberPost.
+$twig->addFunction(new \Twig\TwigFunction('get_thumbnail', function ($post) {
+    return get_post_thumbnail_id($post);
+}));
 // Add class to paragraphs
 $twig->addFilter('pclass', new Twig_SimpleFilter('pclass', function ($string, $class) {
     return str_replace('<p>', '<p class="' . $class . '">', $string);
