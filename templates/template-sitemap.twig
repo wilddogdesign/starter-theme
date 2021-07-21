@@ -16,18 +16,47 @@
                 <ul>
                   {% for item in sitemapList.items %}
                     {% if item.items %}
-                      <li class="c-sitemap__grandchildren">
-                        <a href="{{ item.link }}" target="_blank" title="{{ item.title }}" rel="noopener">
-                          <h2 class="o-heading">{{ item.title }}</h2>
-                        </a>
-                          <ul>
-                            {% for child in item.items %}
-                              <li>
-                                <a href="{{ child.link }}" target="_blank" title="{{ child.title }}" rel="noopener">{{ child.title }}</a>
-                              </li>
-                            {% endfor %}
-                          </ul>
-                      </li>
+                    <li class="c-sitemap__children">
+                      <a href="{{ item.link }}" target="_blank" title="{{ item.title }}" rel="noopener">
+                        <h2 class="c-sitemap__name">{{ item.title }}</h2>
+                      </a>
+
+                      <ul>
+                        {% for child in item.items %}
+                          {% if child.items %}
+                            <li class="c-sitemap__grandchildren">
+                              <a href="{{ child.link }}" target="_blank" title="{{ child.title }}" rel="noopener">
+                                <h2 class="c-sitemap__name">{{ child.title }}</h2>
+                              </a>
+
+                              <ul>
+                                {% for grandchild in child.items %}
+                                  {% if grandchild.items %}
+                                    <li class="c-sitemap__greatgrandchildren">
+                                      <a href="{{ grandchild.link }}" target="_blank" title="{{ grandchild.title }}" rel="noopener">
+                                        <h2 class="c-sitemap__name">{{ grandchild.title }}</h2>
+                                      </a>
+
+                                      <ul>
+                                        {% for greatGrandchild in grandchild.items %}
+                                          <li>
+                                            <a href="{{ greatGrandchild.link }}" target="_blank" title="{{ greatGrandchild.title }}" rel="noopener">{{ greatGrandchild.title }}</a>
+                                          </li>
+                                        {% endfor %}
+                                      </ul>
+                                    </li>
+                                  {% else %}
+                                    <li><a href="{{ grandchild.link }}" target="_blank" title="{{ grandchild.title }}" rel="noopener">{{ grandchild.title }}</a></li>
+                                  {% endif %}
+                                {% endfor %}
+                              </ul>
+                            </li>
+                          {% else %}
+                            <li><a href="{{ child.link }}" target="_blank" title="{{ child.title }}" rel="noopener">{{ child.title }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </li>
                     {% else %}
                       <li><a href="{{ item.link }}" target="_blank" title="{{ item.title }}" rel="noopener">{{ item.title }}</a></li>
                     {% endif %}
